@@ -4,24 +4,25 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private int lastElementIndex = -1;
-    private Resume[] storage = new Resume[10000];
+    private int storageCapacity = 10000;
+    private int lastEmptyIndex = 0;
+    private Resume[] storage = new Resume[storageCapacity];
 
     void clear() {
-        Arrays.fill(storage, null);
-        lastElementIndex = -1;
+        Arrays.fill(storage, 0, lastEmptyIndex, null);
+        lastEmptyIndex = 0;
     }
 
     void save(Resume r) {
-        if (lastElementIndex < 10000 - 1) {
-            storage[++lastElementIndex] = r;
+        if (lastEmptyIndex < storageCapacity) {
+            storage[lastEmptyIndex++] = r;
         } else {
             System.out.println("Storage is filled. Your data isn't added.");
         }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i <= lastElementIndex; i++) {
+        for (int i = 0; i < lastEmptyIndex; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
@@ -30,10 +31,10 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i <= lastElementIndex; i++) {
+        for (int i = 0; i < lastEmptyIndex; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                System.arraycopy(storage, i + 1, storage, i, lastElementIndex - i);
-                lastElementIndex--;
+                System.arraycopy(storage, i + 1, storage, i, lastEmptyIndex);
+                lastEmptyIndex--;
             }
         }
     }
@@ -42,14 +43,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        if (lastElementIndex > -1) {
-            return Arrays.copyOfRange(storage, 0, lastElementIndex + 1);
-        } else {
-            return new Resume[0];
-        }
+        return Arrays.copyOfRange(storage, 0, lastEmptyIndex);
     }
 
     int size() {
-        return lastElementIndex + 1;
+        return lastEmptyIndex;
     }
 }
