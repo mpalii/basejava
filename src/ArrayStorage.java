@@ -4,9 +4,9 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private int storageCapacity = 10000;
+    private int capacity = 3;
     private int lastEmptyIndex = 0;
-    private Resume[] storage = new Resume[storageCapacity];
+    private Resume[] storage = new Resume[capacity];
 
     void clear() {
         Arrays.fill(storage, 0, lastEmptyIndex, null);
@@ -14,7 +14,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (lastEmptyIndex < storageCapacity) {
+        if (lastEmptyIndex < capacity) {
             storage[lastEmptyIndex++] = r;
         } else {
             System.out.println("Storage is filled. Your data isn't added.");
@@ -33,7 +33,7 @@ public class ArrayStorage {
     void delete(String uuid) {
         for (int i = 0; i < lastEmptyIndex; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                System.arraycopy(storage, i + 1, storage, i, lastEmptyIndex);
+                System.arraycopy(storage, i + 1, storage, i, lastEmptyIndex - (i + 1));
                 lastEmptyIndex--;
             }
         }
