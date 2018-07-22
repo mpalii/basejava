@@ -9,24 +9,24 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     private int capacity = 10_000;
-    private int lastEmptyIndex = 0;
+    private int size = 0;
     private Resume[] storage = new Resume[capacity];
 
     public void clear() {
-        Arrays.fill(storage, 0, lastEmptyIndex, null);
-        lastEmptyIndex = 0;
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     public void save(Resume r) {
-        if (lastEmptyIndex < capacity) {
-            storage[lastEmptyIndex++] = r;
+        if (size < capacity) {
+            storage[size++] = r;
         } else {
             System.out.println("Storage is filled. Your data isn't added.");
         }
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < lastEmptyIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return storage[i];
             }
@@ -35,10 +35,10 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < lastEmptyIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                System.arraycopy(storage, i + 1, storage, i, lastEmptyIndex - (i + 1));
-                lastEmptyIndex--;
+                System.arraycopy(storage, i + 1, storage, i, size - (i + 1));
+                size--;
             }
         }
     }
@@ -47,10 +47,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, lastEmptyIndex);
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     public int size() {
-        return lastEmptyIndex;
+        return size;
     }
 }
