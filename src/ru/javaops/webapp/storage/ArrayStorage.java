@@ -18,6 +18,10 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
+        if (getIndexOfResume(r.getUuid()) > -1) {
+            System.out.println("Storage already contains resume with uuid: " + r.getUuid() + ".");
+            return;
+        }
         if (size < capacity) {
             storage[size++] = r;
         } else {
@@ -26,20 +30,31 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
+        int resumeIndex = getIndexOfResume(uuid);
+        if (resumeIndex > -1) {
+            return storage[resumeIndex];
+        } else {
+            System.out.println("Storage do not contains resume with uuid: " + uuid + ".");
+            return null;
         }
-        return null;
+    }
+
+    public void update(Resume r) {
+        int resumeIndex = getIndexOfResume(r.getUuid());
+        if (resumeIndex > -1) {
+            storage[resumeIndex] = r;
+        } else {
+            System.out.println("Storage do not contains resume with uuid: " + r.getUuid() + ".");
+        }
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                System.arraycopy(storage, i + 1, storage, i, size - (i + 1));
-                size--;
-            }
+        int resumeIndex = getIndexOfResume(uuid);
+        if (resumeIndex > -1) {
+            System.arraycopy(storage, resumeIndex + 1, storage, resumeIndex, size - (resumeIndex + 1));
+            size--;
+        } else {
+            System.out.println("Storage do not contains resume with uuid: " + uuid + ".");
         }
     }
 
@@ -52,5 +67,12 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private int getIndexOfResume(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) return i;
+        }
+        return -1;
     }
 }
