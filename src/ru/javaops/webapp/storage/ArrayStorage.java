@@ -4,11 +4,8 @@ import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
 
-/**
- * Array based storage for Resumes
- */
 public class ArrayStorage {
-    private int capacity = 10_000;
+    private static final int capacity = 10_000;
     private int size = 0;
     private Resume[] storage = new Resume[capacity];
 
@@ -58,9 +55,6 @@ public class ArrayStorage {
         }
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
@@ -71,7 +65,9 @@ public class ArrayStorage {
 
     private int getIndexOfResume(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) return i;
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
         }
         return -1;
     }
