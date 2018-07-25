@@ -15,7 +15,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (getIndexOfResume(r.getUuid()) > -1) {
+        if (getIndex(r.getUuid()) > -1) {
             System.out.println("Storage already contains resume with uuid: " + r.getUuid() + ".");
             return;
         }
@@ -27,7 +27,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int resumeIndex = getIndexOfResume(uuid);
+        int resumeIndex = getIndex(uuid);
         if (resumeIndex > -1) {
             return storage[resumeIndex];
         } else {
@@ -37,7 +37,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        int resumeIndex = getIndexOfResume(r.getUuid());
+        int resumeIndex = getIndex(r.getUuid());
         if (resumeIndex > -1) {
             storage[resumeIndex] = r;
         } else {
@@ -46,7 +46,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int resumeIndex = getIndexOfResume(uuid);
+        int resumeIndex = getIndex(uuid);
         if (resumeIndex > -1) {
             System.arraycopy(storage, resumeIndex + 1, storage, resumeIndex, size - (resumeIndex + 1));
             size--;
@@ -63,7 +63,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int getIndexOfResume(String uuid) {
+    private int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
