@@ -1,9 +1,8 @@
-package ru.javaops.webapp.test;
+package ru.javaops.HW1HW2HW3.webapp.test;
 
-import ru.javaops.webapp.model.Resume;
-import ru.javaops.webapp.storage.ArrayStorage;
-import ru.javaops.webapp.storage.SortedArrayStorage;
-import ru.javaops.webapp.storage.Storage;
+import ru.javaops.HW1HW2HW3.webapp.model.Resume;
+import ru.javaops.HW1HW2HW3.webapp.storage.SortedArrayStorage;
+import ru.javaops.HW1HW2HW3.webapp.storage.Storage;
 
 public class MainTestArrayStorage {
 //    private static final Storage ARRAY_STORAGE = new ArrayStorage();

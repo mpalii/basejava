@@ -1,9 +1,8 @@
-package ru.javaops.webapp;
+package ru.javaops.HW1HW2HW3.webapp;
 
-import ru.javaops.webapp.model.Resume;
-import ru.javaops.webapp.storage.ArrayStorage;
-import ru.javaops.webapp.storage.SortedArrayStorage;
-import ru.javaops.webapp.storage.Storage;
+import ru.javaops.HW1HW2HW3.webapp.model.Resume;
+import ru.javaops.HW1HW2HW3.webapp.storage.SortedArrayStorage;
+import ru.javaops.HW1HW2HW3.webapp.storage.Storage;
 
 import java.io.BufferedReader;
 import java.io.IOException;

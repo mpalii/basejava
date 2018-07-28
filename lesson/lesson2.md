@@ -32,10 +32,10 @@
 
 ## Домашнее задание
 
-> Правка к видео: ru.javaops.webapp.storage.ArrayStorage.delete() - вместо `storage[i] = null` нужно `storage[size-1] = null`
+> Правка к видео: ru.javaops.HW1HW2HW3.webapp.storage.ArrayStorage.delete() - вместо `storage[i] = null` нужно `storage[size-1] = null`
 
 - Прочитать <a href="http://www.intuit.ru/studies/courses/16/16/lecture/27113?page=4">Соглашения по именованию.</a>
-- Реализовать `ru.javaops.webapp.storage.ArrayStorage.update`
-- Сделать проверки: в `update/delete/get` - резюме есть в storage, в `save`- нет в storage: `System.out.println("ru.javaops.webapp.model.Resume ...")`.
+- Реализовать `ru.javaops.HW1HW2HW3.webapp.storage.ArrayStorage.update`
+- Сделать проверки: в `update/delete/get` - резюме есть в storage, в `save`- нет в storage: `System.out.println("ru.javaops.HW1HW2HW3.webapp.model.Resume ...")`.
 - Сделать в save проверку на переполнениеe: `System.out.println("...")`.
-- Избавится от дублирования в коде `ru.javaops.webapp.storage.ArrayStorage`
+- Избавится от дублирования в коде `ru.javaops.HW1HW2HW3.webapp.storage.ArrayStorage`

@@ -1,4 +1,4 @@
-package ru.javaops.webapp.model;
+package ru.javaops.HW1HW2HW3.webapp.model;
 
 public class Resume implements Comparable<Resume> {
     private String uuid;

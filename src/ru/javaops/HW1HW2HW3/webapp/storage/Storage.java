@@ -1,6 +1,6 @@
-package ru.javaops.webapp.storage;
+package ru.javaops.HW1HW2HW3.webapp.storage;
 
-import ru.javaops.webapp.model.Resume;
+import ru.javaops.HW1HW2HW3.webapp.model.Resume;
 
 public interface Storage {
     void clear();
