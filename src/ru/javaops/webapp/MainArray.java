@@ -2,6 +2,7 @@ package ru.javaops.webapp;
 
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.storage.ArrayStorage;
+import ru.javaops.webapp.storage.SortedArrayStorage;
 import ru.javaops.webapp.storage.Storage;
 
 import java.io.BufferedReader;
@@ -9,7 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainArray {
-    private final static Storage ARRAY_STORAGE = new ArrayStorage();
+//    private final static Storage ARRAY_STORAGE = new ArrayStorage();
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
