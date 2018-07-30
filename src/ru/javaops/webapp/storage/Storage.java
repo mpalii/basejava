@@ -1,13 +1,13 @@
-package ru.javaops.HW1HW2HW3.webapp.storage;
+package ru.javaops.webapp.storage;
 
-import ru.javaops.HW1HW2HW3.webapp.model.Resume;
+import ru.javaops.webapp.model.Resume;
 
 public interface Storage {
     void clear();
 
-    void update(Resume r);
+    void update(Resume resume);
 
-    void save(Resume r);
+    void save(Resume resume);
 
     Resume get(String uuid);
 
