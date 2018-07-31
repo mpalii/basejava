@@ -1,4 +1,4 @@
-package ru.javaops.webapp.test;
+package ru.javaops.webapp;
 
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.storage.ArrayStorage;
