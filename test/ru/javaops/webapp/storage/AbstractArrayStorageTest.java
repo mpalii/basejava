@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static ru.javaops.webapp.storage.AbstractArrayStorage.CAPACITY;
 
-class AbstractArrayStorageTest {
+abstract class AbstractArrayStorageTest {
     private Storage storage;
-    private int storageMaxCapacity = 10_000;
     private static final Resume resume1 = new Resume("UUID_1");
     private static final Resume resume2 = new Resume("UUID_2");
     private static final Resume resume3 = new Resume("UUID_3");
@@ -48,7 +48,7 @@ class AbstractArrayStorageTest {
     @Test
     void saveStorageException() {
         assertDoesNotThrow(() -> {
-            for (int i = storage.size(); i < storageMaxCapacity; i++) {
+            for (int i = storage.size(); i < CAPACITY; i++) {
                 storage.save(new Resume());
             }
         });
