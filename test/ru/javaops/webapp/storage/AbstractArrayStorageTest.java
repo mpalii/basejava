@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class AbstractArrayStorageTest {
     private Storage storage;
@@ -48,26 +47,14 @@ class AbstractArrayStorageTest {
 
     @Test
     void saveStorageException() {
-        try {
+        assertDoesNotThrow(() -> {
             for (int i = storage.size(); i < storageMaxCapacity; i++) {
                 storage.save(new Resume());
             }
-        } catch (StorageExcepion ex) {
-            fail();
-        }
+        });
         assertThrows(StorageExcepion.class, () -> {
             storage.save(new Resume());
         });
-
-//        Another way of realisation:
-//        assertDoesNotThrow(() -> {
-//            for (int i = storage.size(); i < storageMaxCapacity; i++) {
-//                storage.save(new Resume());
-//            }
-//        });
-//        assertThrows(StorageExcepion.class, () -> {
-//            storage.save(new Resume());
-//        });
     }
 
     @Test
