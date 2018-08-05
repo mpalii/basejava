@@ -11,10 +11,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
+import static ru.javaops.webapp.storage.AbstractArrayStorage.CAPACITY;
 
-public class AbstractArrayStorageTest {
+public abstract class AbstractArrayStorageTest {
     private Storage storage;
-    private int storageMaxCapacity = 10_000;
     private static final Resume resume1 = new Resume("UUID_1");
     private static final Resume resume2 = new Resume("UUID_2");
     private static final Resume resume3 = new Resume("UUID_3");
@@ -46,11 +46,11 @@ public class AbstractArrayStorageTest {
     @Test(expected = StorageExcepion.class)
     public void saveStorageException() {
         try {
-            for (int i = storage.size(); i < storageMaxCapacity; i++) {
+            for (int i = storage.size(); i < CAPACITY; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageExcepion ex) {
-            fail();
+            fail("Test was failed!");
         }
         storage.save(resume4);
     }
