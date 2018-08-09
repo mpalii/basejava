@@ -20,7 +20,7 @@ abstract class AbstractArrayStorageTest {
     private static final Resume resume3 = new Resume("UUID_3");
     private static final Resume resume4 = new Resume("UUID_4");
 
-    public AbstractArrayStorageTest(Storage storage) {
+    private AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -40,9 +40,7 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void saveExistStorageException() {
-        assertThrows(ExistStorageException.class, () -> {
-            storage.save(resume2);
-        });
+        assertThrows(ExistStorageException.class, () -> storage.save(resume2));
     }
 
     @Test
@@ -52,9 +50,7 @@ abstract class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         });
-        assertThrows(StorageExcepion.class, () -> {
-            storage.save(new Resume());
-        });
+        assertThrows(StorageExcepion.class, () -> storage.save(new Resume()));
     }
 
     @Test
@@ -65,16 +61,12 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void update() {
-        assertDoesNotThrow(() -> {
-            storage.update(resume2);
-        });
+        assertDoesNotThrow(() -> storage.update(resume2));
     }
 
     @Test
     void updateNotExistStorageException() {
-        assertThrows(NotExistStorageException.class, () -> {
-            storage.update(resume4);
-        });
+        assertThrows(NotExistStorageException.class, () -> storage.update(resume4));
     }
 
     @Test
@@ -85,9 +77,7 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void deleteNotExistStorageException() {
-        assertThrows(NotExistStorageException.class, () -> {
-            storage.delete("UUID_4");
-        });
+        assertThrows(NotExistStorageException.class, () -> storage.delete("UUID_4"));
     }
 
     @Test
@@ -102,9 +92,7 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void getNotExistStorageException() {
-        assertThrows(NotExistStorageException.class,() -> {
-            storage.get("wrong_uuid");
-        });
+        assertThrows(NotExistStorageException.class,() -> storage.get("wrong_uuid"));
     }
 
     @Test
