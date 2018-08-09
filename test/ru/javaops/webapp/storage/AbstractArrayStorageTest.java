@@ -20,7 +20,7 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume resume3 = new Resume("UUID_3");
     private static final Resume resume4 = new Resume("UUID_4");
 
-    private AbstractArrayStorageTest(Storage storage) {
+    public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
