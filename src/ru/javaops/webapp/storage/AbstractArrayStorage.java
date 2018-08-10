@@ -7,17 +7,35 @@ import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int CAPACITY = 10_000;
 
     protected int size = 0;
     protected Resume[] storage = new Resume[CAPACITY];
 
-    public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index > -1) {
-            throw new ExistStorageException(resume.getUuid());
-        }
+    @Override
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    protected void executeUpdate(int index, Resume resume) {
+        storage[index] = resume;
+    }
+
+    @Override
+    protected void executeSave(int index, Resume resume) {
         if (size < CAPACITY) {
             saveResumeIntoPosition(resume, index);
             size++;
@@ -26,48 +44,17 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
+    @Override
+    protected Resume executeGet(int index) {
+        return storage[index];
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index > -1) {
-            storage[index] = resume;
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+    @Override
+    protected void executeDelete(int index) {
+        deleteResumeInPosition(index);
+        storage[size - 1] = null;
+        size--;
     }
-
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index > -1) {
-            deleteResumeInPosition(index);
-            storage[size - 1] = null;
-            size--;
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    public int size() {
-        return size;
-    }
-
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index > -1) {
-            return storage[index];
-        }
-        throw new NotExistStorageException(uuid);
-    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
-
-    protected abstract int getIndex(String uuid);
 
     protected abstract void saveResumeIntoPosition(Resume resume, int index);
 
