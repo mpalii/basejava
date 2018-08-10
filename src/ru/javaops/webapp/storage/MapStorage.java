@@ -4,6 +4,8 @@ import ru.javaops.webapp.model.Resume;
 
 public class MapStorage extends AbstractStorage {
 
+    /*-----------TO DO-----------*/
+
     @Override
     public void clear() {
 
