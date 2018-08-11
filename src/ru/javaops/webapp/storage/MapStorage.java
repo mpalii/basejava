@@ -22,7 +22,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected int executeGetIndex(String uuid) {
+    protected int executeGetKey(String uuid) {
         return 0;
     }
 
