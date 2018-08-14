@@ -24,28 +24,38 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int executeGetKey(String uuid) {
-        return storage.indexOf(new Resume(uuid));
+    protected Integer executeGetKey(String uuid) {
+        for (int i = 0; i < storage.size(); i++) {
+            if(storage.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
-    protected void executeUpdate(int index, Resume resume) {
-        storage.set(index, resume);
+    protected void executeUpdate(Object index, Resume resume) {
+        storage.set((Integer) index, resume);
     }
 
     @Override
-    protected void executeSave(int index, Resume resume) {
+    protected void executeSave(Object index, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected Resume executeGet(int index) {
-        return storage.get(index);
+    protected Resume executeGet(Object index) {
+        return storage.get((Integer) index);
     }
 
     @Override
-    protected void executeDelete(int index) {
-        storage.remove(index);
+    protected void executeDelete(Object index) {
+        storage.remove((int) index);
+    }
+
+    @Override
+    protected boolean executeKeyExists(Object key) {
+        return ((Integer) key > -1);
     }
 }
 

@@ -13,6 +13,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
     protected Resume[] storage = new Resume[CAPACITY];
 
+    protected abstract void saveResumeIntoPosition(Resume resume, int index);
+    protected abstract void deleteResumeInPosition(int index);
+    protected abstract Integer executeGetKey(String uuid);
+
     @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -30,14 +34,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void executeUpdate(int index, Resume resume) {
-        storage[index] = resume;
+    protected boolean executeKeyExists(Object index) {
+        return ((Integer) index > -1);
     }
 
     @Override
-    protected void executeSave(int index, Resume resume) {
+    protected void executeUpdate(Object index, Resume resume) {
+        storage[(Integer) index] = resume;
+    }
+
+    @Override
+    protected void executeSave(Object index, Resume resume) {
         if (size < CAPACITY) {
-            saveResumeIntoPosition(resume, index);
+            saveResumeIntoPosition(resume, (Integer) index);
             size++;
         } else {
             throw new StorageExcepion("Storage overflow", resume.getUuid());
@@ -45,18 +54,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume executeGet(int index) {
-        return storage[index];
+    protected Resume executeGet(Object index) {
+        return storage[(Integer) index];
     }
 
     @Override
-    protected void executeDelete(int index) {
-        deleteResumeInPosition(index);
+    protected void executeDelete(Object index) {
+        deleteResumeInPosition((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
-    protected abstract void saveResumeIntoPosition(Resume resume, int index);
-
-    protected abstract void deleteResumeInPosition(int index);
 }
