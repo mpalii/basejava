@@ -54,8 +54,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean executeIsExistingKey(Object key) {
-        return ((Integer) key > -1);
+    protected boolean executeIsExistingKey(Object index) {
+        return ((Integer) index > -1);
     }
 }
 
