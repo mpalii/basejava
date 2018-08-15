@@ -11,7 +11,7 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void executeSave(Object key, Resume resume);
     protected abstract Resume executeGet(Object key);
     protected abstract void executeDelete(Object key);
-    protected abstract boolean executeKeyExists(Object key);
+    protected abstract boolean executeIsExistingKey(Object key);
 
     @Override
     public void update(Resume resume) {
@@ -39,7 +39,7 @@ public abstract class AbstractStorage implements Storage {
 
     private Object searchExistentKey(String uuid) {
         Object key = executeGetKey(uuid);
-        if (!executeKeyExists(key)) {
+        if (!executeIsExistingKey(key)) {
             throw new NotExistStorageException(uuid);
         }
         return key;
@@ -47,7 +47,7 @@ public abstract class AbstractStorage implements Storage {
 
     private Object searchNonexistentKey(String uuid) {
         Object key = executeGetKey(uuid);
-        if (executeKeyExists(key)) {
+        if (executeIsExistingKey(key)) {
             throw new ExistStorageException(uuid);
         }
         return key;
