@@ -13,7 +13,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
     protected Resume[] storage = new Resume[CAPACITY];
 
-    protected abstract void saveResumeIntoPosition(Resume resume, int index);
+    protected abstract void saveResumeIntoPosition(int index, Resume resume);
     protected abstract void deleteResumeInPosition(int index);
     protected abstract Integer executeGetKey(String uuid);
 
@@ -46,7 +46,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected void executeSave(Object index, Resume resume) {
         if (size < CAPACITY) {
-            saveResumeIntoPosition(resume, (Integer) index);
+            saveResumeIntoPosition((Integer) index, resume);
             size++;
         } else {
             throw new StorageExcepion("Storage overflow", resume.getUuid());
