@@ -2,7 +2,7 @@ package ru.javaops.webapp.model;
 
 import java.util.UUID;
 
-public class Resume implements Comparable<Resume> {
+public class Resume {
     private final String uuid;
 
     public Resume() {
@@ -35,10 +35,5 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int hashCode() {
         return uuid.hashCode();
-    }
-
-    @Override
-    public int compareTo(Resume o) {
-        return uuid.compareTo(o.getUuid());
     }
 }

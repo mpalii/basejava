@@ -3,8 +3,23 @@ package ru.javaops.webapp.storage;
 import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
+//    private static class ResumeComparator implements Comparator<Resume> {
+//        @Override
+//        public int compare(Resume o1, Resume o2) {
+//            return o1.getUuid().compareTo(o2.getUuid());
+//        }
+//    }
+
+    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
+        @Override
+        public int compare(Resume o1, Resume o2) {
+            return o1.getUuid().compareTo(o2.getUuid());
+        }
+    };
+
     @Override
     protected void saveResumeIntoPosition(int index, Resume resume) {
         int insertPosition = -index - 1;
@@ -15,7 +30,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected Integer executeGetKey(String uuid) {
         Resume key = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, key);
+        return Arrays.binarySearch(storage, 0, size, key, RESUME_COMPARATOR);
     }
 
     @Override
