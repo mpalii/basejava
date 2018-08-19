@@ -4,27 +4,24 @@ import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> {
-    int result = o1.getFullName().compareTo(o2.getFullName());
-    if (result != 0) {
-        return result;
-    }
-    return o1.getUuid().compareTo(o2.getUuid());
-};
-
     protected abstract Object executeGetKey(String uuid);
+
     protected abstract void executeUpdate(Object key, Resume resume);
+
     protected abstract void executeSave(Object key, Resume resume);
+
     protected abstract Resume executeGet(Object key);
+
     protected abstract void executeDelete(Object key);
+
     protected abstract boolean executeIsExistingKey(Object key);
-    protected abstract Resume[] executeStorageAsArray();
+
+    abstract List<Resume> executeStorageAsList();
 
     @Override
     public void update(Resume resume) {
@@ -52,9 +49,9 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Resume[] resumeArray = executeStorageAsArray();
-        Arrays.sort(resumeArray, RESUME_COMPARATOR);
-        return Arrays.asList(resumeArray);
+        List<Resume> list = executeStorageAsList();
+        Collections.sort(list);
+        return list;
     }
 
     private Object searchExistentKey(String uuid) {

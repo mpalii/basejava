@@ -1,7 +1,7 @@
 package ru.javaops.webapp.exception;
 
-public class ExistStorageException extends StorageExcepion {
+public class ExistStorageException extends StorageException {
     public ExistStorageException(String uuid) {
-        super("Resume " + uuid + " not exist.", uuid);
+        super("Resume " + uuid + " already exists.", uuid);
     }
 }

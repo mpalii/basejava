@@ -22,5 +22,4 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected void deleteResumeInPosition(int index) {
         storage[index] = storage[size - 1];
     }
-
 }

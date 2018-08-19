@@ -2,10 +2,7 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MapStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
@@ -51,8 +48,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] executeStorageAsArray() {
-        return storage.values().toArray(new Resume[0]);
+    protected List<Resume> executeStorageAsList() {
+        return Arrays.asList(storage.values().toArray(new Resume[0]));
     }
 
 

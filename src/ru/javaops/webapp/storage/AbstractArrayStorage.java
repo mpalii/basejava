@@ -1,20 +1,32 @@
 package ru.javaops.webapp.storage;
 
-import ru.javaops.webapp.exception.StorageExcepion;
+import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
-    protected static final int CAPACITY = 10_000;
+    static final int CAPACITY = 10_000;
 
-    protected int size = 0;
+    int size = 0;
     protected Resume[] storage = new Resume[CAPACITY];
 
     protected abstract void saveResumeIntoPosition(int index, Resume resume);
+
     protected abstract void deleteResumeInPosition(int index);
+
     protected abstract Integer executeGetKey(String uuid);
+
+    @Override
+    public List<Resume> getAllSorted() {
+        Resume[] arr = new Resume[size];
+        System.arraycopy(storage, 0, arr, 0, size);
+        List<Resume> list = Arrays.asList(arr);
+        Collections.sort(list);
+        return list;
+    }
 
     @Override
     public void clear() {
@@ -28,10 +40,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] executeStorageAsArray() {
+    protected List<Resume> executeStorageAsList() {
         Resume[] arr = new Resume[size];
         System.arraycopy(storage, 0, arr, 0, size);
-        return arr;
+        return Arrays.asList(arr);
     }
 
     @Override
@@ -50,7 +62,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             saveResumeIntoPosition((Integer) index, resume);
             size++;
         } else {
-            throw new StorageExcepion("Storage overflow", resume.getUuid());
+            throw new StorageException("Storage overflow", resume.getUuid());
         }
     }
 
@@ -65,5 +77,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[size - 1] = null;
         size--;
     }
-
 }

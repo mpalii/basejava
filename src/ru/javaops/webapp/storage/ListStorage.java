@@ -2,7 +2,6 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.model.Resume;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected Integer executeGetKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
-            if(storage.get(i).getUuid().equals(uuid)) {
+            if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
             }
         }
@@ -55,8 +54,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] executeStorageAsArray() {
-        return storage.toArray(new Resume[0]);
+    protected List<Resume> executeStorageAsList() {
+        return storage.subList(0, storage.size());
     }
 }
 

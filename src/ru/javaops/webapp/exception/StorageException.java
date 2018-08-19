@@ -1,9 +1,9 @@
 package ru.javaops.webapp.exception;
 
-public class StorageExcepion extends RuntimeException {
+public class StorageException extends RuntimeException {
     private final String uuid;
 
-    public StorageExcepion(String message, String uuid) {
+    public StorageException(String message, String uuid) {
         super(message);
         this.uuid = uuid;
     }
