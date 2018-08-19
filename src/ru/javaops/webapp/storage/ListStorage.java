@@ -2,6 +2,7 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.model.Resume;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,11 +12,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
     }
 
     @Override
@@ -56,6 +52,11 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected boolean executeIsExistingKey(Object index) {
         return ((Integer) index > -1);
+    }
+
+    @Override
+    protected Resume[] executeStorageAsArray() {
+        return storage.toArray(new Resume[0]);
     }
 }
 

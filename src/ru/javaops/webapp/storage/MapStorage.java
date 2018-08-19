@@ -2,7 +2,9 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.model.Resume;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
@@ -11,11 +13,6 @@ public class MapStorage extends AbstractStorage {
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
@@ -51,6 +48,11 @@ public class MapStorage extends AbstractStorage {
     @Override
     protected boolean executeIsExistingKey(Object key) {
         return storage.containsKey(key);
+    }
+
+    @Override
+    protected Resume[] executeStorageAsArray() {
+        return storage.values().toArray(new Resume[0]);
     }
 
 

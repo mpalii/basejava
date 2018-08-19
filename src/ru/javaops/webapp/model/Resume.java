@@ -1,16 +1,27 @@
 package ru.javaops.webapp.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
-public class Resume {
+public class Resume implements Comparable<Resume> {
     private final String uuid;
+    private String fullName;
 
     public Resume() {
-        this(UUID.randomUUID().toString());
+        this(UUID.randomUUID().toString(), "No name");
     }
 
     public Resume(String uuid) {
+        this(uuid, "No name");
+    }
+
+    public Resume(String uuid, String fullName) {
         this.uuid = uuid;
+        this.fullName = fullName.trim();
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public String getUuid() {
@@ -19,7 +30,7 @@ public class Resume {
 
     @Override
     public String toString() {
-        return uuid;
+        return uuid + " " + fullName;
     }
 
     @Override
@@ -34,6 +45,15 @@ public class Resume {
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return 7 * Objects.hashCode(uuid) + 11 * Objects.hashCode(fullName);
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        int result = o.getFullName().compareTo(fullName);
+        if (result != 0) {
+            return result;
+        }
+        return o.getUuid().compareTo(uuid);
     }
 }

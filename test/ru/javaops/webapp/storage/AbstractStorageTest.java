@@ -29,9 +29,9 @@ public abstract class AbstractStorageTest {
     @Before
     public void setUp() {
         storage.clear();
-        storage.save(RESUME_1);
-        storage.save(RESUME_2);
         storage.save(RESUME_3);
+        storage.save(RESUME_2);
+        storage.save(RESUME_1);
     }
 
     @Test
@@ -89,11 +89,10 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
-        assertEquals(3, storage.size());
-        assertEquals(RESUME_1, storage.get("UUID_1"));
-        assertEquals(RESUME_2, storage.get("UUID_2"));
-        assertEquals(RESUME_3, storage.get("UUID_3"));
+    public void getAllSorted() {
+        Resume[] expectedArray = { RESUME_1, RESUME_2, RESUME_3 };
+        Resume[] actualArray = storage.getAllSorted().toArray(new Resume[0]);
+        assertArrayEquals(expectedArray, actualArray);
     }
 
     protected void assertSize(int size) {

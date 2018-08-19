@@ -1,11 +1,10 @@
 package ru.javaops.webapp.storage;
 
-import ru.javaops.webapp.exception.ExistStorageException;
-import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.exception.StorageExcepion;
 import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int CAPACITY = 10_000;
@@ -24,13 +23,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    public int size() {
+        return size;
     }
 
     @Override
-    public int size() {
-        return size;
+    protected Resume[] executeStorageAsArray() {
+        Resume[] arr = new Resume[size];
+        System.arraycopy(storage, 0, arr, 0, size);
+        return arr;
     }
 
     @Override
