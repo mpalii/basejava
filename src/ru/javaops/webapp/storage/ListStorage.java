@@ -4,6 +4,7 @@ import ru.javaops.webapp.model.Resume;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
     private List<Resume> storage = new LinkedList<>();
@@ -16,6 +17,14 @@ public class ListStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return new LinkedList<>(storage).
+                stream().
+                sorted().
+                collect(Collectors.toList());
     }
 
     @Override
@@ -51,11 +60,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected boolean executeIsExistingKey(Object index) {
         return ((Integer) index > -1);
-    }
-
-    @Override
-    protected List<Resume> executeStorageAsList() {
-        return storage.subList(0, storage.size());
     }
 }
 

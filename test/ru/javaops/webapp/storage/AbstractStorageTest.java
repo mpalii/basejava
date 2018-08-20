@@ -9,7 +9,7 @@ import ru.javaops.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
     Storage storage;
@@ -41,7 +41,7 @@ public abstract class AbstractStorageTest {
     public void update() {
         Resume updatedResume = new Resume("UUID_2", "New name");
         storage.update(updatedResume);
-        assertEquals(updatedResume.getFullName(), storage.get("UUID_2").getFullName());
+        assertEquals(updatedResume, storage.get("UUID_2"));
     }
 
     @Test(expected = NotExistStorageException.class)

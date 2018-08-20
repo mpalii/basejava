@@ -2,7 +2,11 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.model.Resume;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MapStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
@@ -17,6 +21,13 @@ public class MapStorage extends AbstractStorage {
         return storage.size();
     }
 
+    public List<Resume> getAllSorted() {
+        return new LinkedList<>(storage.values()).
+                stream().
+                sorted().
+                collect(Collectors.toList());
+    }
+
     @Override
     protected Object executeGetKey(String uuid) {
         return uuid;
@@ -29,7 +40,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void executeSave(Object key, Resume resume) {
-        storage.put((String)key, resume);
+        storage.put((String) key, resume);
     }
 
     @Override
@@ -47,10 +58,8 @@ public class MapStorage extends AbstractStorage {
         return storage.containsKey(key);
     }
 
-    @Override
-    protected List<Resume> executeStorageAsList() {
-        return Arrays.asList(storage.values().toArray(new Resume[0]));
-    }
-
-
+//    @Override
+//    protected List<Resume> executeStorageAsList() {
+//        return new LinkedList<>(storage.values());
+//    }
 }

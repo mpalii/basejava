@@ -4,8 +4,8 @@ import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     static final int CAPACITY = 10_000;
@@ -20,15 +20,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract Integer executeGetKey(String uuid);
 
     @Override
-    public List<Resume> getAllSorted() {
-        Resume[] arr = new Resume[size];
-        System.arraycopy(storage, 0, arr, 0, size);
-        List<Resume> list = Arrays.asList(arr);
-        Collections.sort(list);
-        return list;
-    }
-
-    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -39,11 +30,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    @Override
-    protected List<Resume> executeStorageAsList() {
-        Resume[] arr = new Resume[size];
-        System.arraycopy(storage, 0, arr, 0, size);
-        return Arrays.asList(arr);
+    public List<Resume> getAllSorted() {
+        return Arrays.stream(Arrays.copyOf(storage, size)).
+                sorted().
+                collect(Collectors.toList());
     }
 
     @Override
