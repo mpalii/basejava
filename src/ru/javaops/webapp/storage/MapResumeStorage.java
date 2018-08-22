@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class MapStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -21,45 +20,39 @@ public class MapStorage extends AbstractStorage {
         return storage.size();
     }
 
-    public List<Resume> getAllSorted() {
-        return new LinkedList<>(storage.values()).
-                stream().
-                sorted().
-                collect(Collectors.toList());
-    }
-
     @Override
-    protected Object executeGetKey(String uuid) {
-        return uuid;
+    protected Resume executeGetKey(String uuid) {
+        Resume key = storage.get(uuid);
+        return key != null ? key : new Resume(uuid, "MOCK NAME");
     }
 
     @Override
     protected void executeUpdate(Object key, Resume resume) {
-        storage.replace((String) key, resume);
+        storage.replace(((Resume) key).getUuid(), resume);
     }
 
     @Override
     protected void executeSave(Object key, Resume resume) {
-        storage.put((String) key, resume);
+        storage.put(((Resume) key).getUuid(), resume);
     }
 
     @Override
     protected Resume executeGet(Object key) {
-        return storage.get(key);
+        return storage.get(((Resume) key).getUuid());
     }
 
     @Override
     protected void executeDelete(Object key) {
-        storage.remove(key);
+        storage.remove(((Resume) key).getUuid());
     }
 
     @Override
     protected boolean executeIsExistingKey(Object key) {
-        return storage.containsKey(key);
+        return storage.containsKey(((Resume) key).getUuid());
     }
 
-//    @Override
-//    protected List<Resume> executeStorageAsList() {
-//        return new LinkedList<>(storage.values());
-//    }
+    @Override
+    protected List<Resume> executeStorageAsList() {
+        return new LinkedList<>(storage.values());
+    }
 }

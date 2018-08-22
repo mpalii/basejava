@@ -5,7 +5,6 @@ import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     static final int CAPACITY = 10_000;
@@ -28,12 +27,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     public int size() {
         return size;
-    }
-
-    public List<Resume> getAllSorted() {
-        return Arrays.stream(Arrays.copyOf(storage, size)).
-                sorted().
-                collect(Collectors.toList());
     }
 
     @Override
@@ -66,5 +59,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         deleteResumeInPosition((Integer) index);
         storage[size - 1] = null;
         size--;
+    }
+
+    @Override
+    protected List<Resume> executeStorageAsList() {
+        return Arrays.asList(Arrays.copyOf(storage, size));
     }
 }
