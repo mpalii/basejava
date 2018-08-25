@@ -5,7 +5,7 @@ import ru.javaops.webapp.model.Resume;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
     private List<Resume> storage = new LinkedList<>();
 
     @Override
@@ -29,28 +29,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void executeUpdate(Object index, Resume resume) {
-        storage.set((Integer) index, resume);
+    protected void executeUpdate(Integer index, Resume resume) {
+        storage.set(index, resume);
     }
 
     @Override
-    protected void executeSave(Object index, Resume resume) {
+    protected void executeSave(Integer index, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected Resume executeGet(Object index) {
-        return storage.get((Integer) index);
+    protected Resume executeGet(Integer index) {
+        return storage.get(index);
     }
 
     @Override
-    protected void executeDelete(Object index) {
+    protected void executeDelete(Integer index) {
         storage.remove((int) index);
     }
 
     @Override
-    protected boolean executeIsExistingKey(Object index) {
-        return ((Integer) index > -1);
+    protected boolean executeIsExistingKey(Integer index) {
+        return (index > -1);
     }
 
     @Override

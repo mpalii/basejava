@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -22,33 +22,35 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected Resume executeGetKey(String uuid) {
-        Resume key = storage.get(uuid);
-        return key != null ? key : new Resume(uuid, "MOCK NAME");
+//        Resume key = storage.get(uuid);
+//        return key != null ? key : new Resume(uuid, "MOCK NAME");
+        return storage.get(uuid);
     }
 
     @Override
-    protected void executeUpdate(Object key, Resume resume) {
-        storage.replace(((Resume) key).getUuid(), resume);
+    protected void executeUpdate(Resume key, Resume resume) {
+        storage.replace(key.getUuid(), resume);
     }
 
     @Override
-    protected void executeSave(Object key, Resume resume) {
-        storage.put(((Resume) key).getUuid(), resume);
+    protected void executeSave(Resume key, Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume executeGet(Object key) {
-        return storage.get(((Resume) key).getUuid());
+    protected Resume executeGet(Resume key) {
+        return storage.get(key.getUuid());
     }
 
     @Override
-    protected void executeDelete(Object key) {
-        storage.remove(((Resume) key).getUuid());
+    protected void executeDelete(Resume key) {
+        storage.remove(key.getUuid());
     }
 
     @Override
-    protected boolean executeIsExistingKey(Object key) {
-        return storage.containsKey(((Resume) key).getUuid());
+    protected boolean executeIsExistingKey(Resume key) {
+//        return storage.containsKey(((Resume) key).getUuid());
+        return key != null;
     }
 
     @Override

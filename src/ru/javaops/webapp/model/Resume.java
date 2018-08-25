@@ -5,13 +5,15 @@ import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
     private final String uuid;
-    private String fullName;
+    private final String fullName;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid must be not null");
+        Objects.requireNonNull(fullName, "fullName must be not null");
         this.uuid = uuid;
         this.fullName = fullName.trim();
     }
@@ -41,7 +43,9 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int hashCode() {
-        return 7 * Objects.hashCode(uuid) + 11 * Objects.hashCode(fullName);
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        return result;
     }
 
     @Override

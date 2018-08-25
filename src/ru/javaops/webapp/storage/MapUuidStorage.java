@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -21,32 +21,32 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object executeGetKey(String uuid) {
+    protected String executeGetKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected void executeUpdate(Object key, Resume resume) {
-        storage.replace((String) key, resume);
+    protected void executeUpdate(String key, Resume resume) {
+        storage.replace(key, resume);
     }
 
     @Override
-    protected void executeSave(Object key, Resume resume) {
-        storage.put((String) key, resume);
+    protected void executeSave(String key, Resume resume) {
+        storage.put(key, resume);
     }
 
     @Override
-    protected Resume executeGet(Object key) {
+    protected Resume executeGet(String key) {
         return storage.get(key);
     }
 
     @Override
-    protected void executeDelete(Object key) {
+    protected void executeDelete(String key) {
         storage.remove(key);
     }
 
     @Override
-    protected boolean executeIsExistingKey(Object key) {
+    protected boolean executeIsExistingKey(String key) {
         return storage.containsKey(key);
     }
 
