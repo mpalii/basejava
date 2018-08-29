@@ -1,20 +1,12 @@
 package ru.javaops.webapp.model;
 
+import java.util.Objects;
+
 public class Link {
-    private String name;
     private String url;
 
-    public Link(String name, String url) {
-        this.name = name;
+    public Link(String url) {
         this.url = url;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUrl() {
@@ -29,17 +21,12 @@ public class Link {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Link link = (Link) o;
-
-        if (name != null ? !name.equals(link.name) : link.name != null) return false;
-        return url != null ? url.equals(link.url) : link.url == null;
+        return Objects.equals(url, link.url);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        return result;
+        return Objects.hash(url);
     }
 }

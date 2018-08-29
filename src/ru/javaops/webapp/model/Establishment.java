@@ -6,7 +6,7 @@ import java.util.List;
 public class Establishment {
     private String name;
     private Link link;
-    private List<Position> positions;
+    private List<String> positions;
 
     public Establishment(String name, Link link) {
         positions = new LinkedList<>();
@@ -30,11 +30,11 @@ public class Establishment {
         this.link = link;
     }
 
-    public List<Position> getPositions() {
+    public List<String> getPositions() {
         return positions;
     }
 
-    public void setPositions(List<Position> positions) {
+    public void setPositions(List<String> positions) {
         this.positions = positions;
     }
 
@@ -62,8 +62,8 @@ public class Establishment {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(name).append("\n");
-        for (Position position : positions) {
-            stringBuilder.append(position.toString()).append("\n");
+        for (String position : positions) {
+            stringBuilder.append(position).append("\n");
         }
 //        stringBuilder.append("\n");
         return stringBuilder.toString();

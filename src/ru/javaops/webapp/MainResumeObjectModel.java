@@ -10,23 +10,23 @@ public class MainResumeObjectModel {
         Resume resume = new Resume("Григорий Кислин");
 
         // Contacts initialization
-        resume.addContact(ContactType.TELEPHONE, new Contact("+7(921) 855-0482", null));
-        resume.addContact(ContactType.SKYPE, new Contact("grigory.kislin", null));
-        resume.addContact(ContactType.EMAIL, new Contact("gkislin@yandex.ru", null));
-        resume.addContact(ContactType.LINKEDIN, new Contact("gkislin", null));
-        resume.addContact(ContactType.GITHUB, new Contact("gkislin", null));
-        resume.addContact(ContactType.STACKOVERFLOW, new Contact("gkislin", null));
-        resume.addContact(ContactType.HOMEPAGE, new Contact("Домашняя страница", new Link("Homepage", "http://gkislin.ru/")));
+        resume.addContact(ContactType.TELEPHONE,"+7(921) 855-0482");
+        resume.addContact(ContactType.SKYPE, "grigory.kislin");
+        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.LINKEDIN, "gkislin");
+        resume.addContact(ContactType.GITHUB, "gkislin");
+        resume.addContact(ContactType.STACKOVERFLOW, "gkislin");
+        resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
 
         // Objective initialization
         String objectiveText = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
-        SingleTextContainer objectiveTextContainer =  new SingleTextContainer(objectiveText);
-        resume.addSection(SectionType.OBJECTIVE, new Section("OBJECTIVE", objectiveTextContainer));
+        TextSection objectiveTextSection =  new TextSection(objectiveText);
+        resume.addSection(SectionType.OBJECTIVE, objectiveTextSection);
 
         // Personal initialization
         String personalText = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
-        SingleTextContainer personalTextContainer = new SingleTextContainer(personalText);
-        resume.addSection(SectionType.PERSONAL, new Section("PERSONAL", personalTextContainer));
+        TextSection personalTextSection = new TextSection(personalText);
+        resume.addSection(SectionType.PERSONAL, personalTextSection);
 
         // Achievement initialization
         String achievement1 = "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.";
@@ -42,7 +42,7 @@ public class MainResumeObjectModel {
         achievementsList.add(achievement4);
         achievementsList.add(achievement5);
         achievementsList.add(achievement6);
-        ListTextContainer achievementTextContainer = new ListTextContainer(achievementsList);
+        ListTextSection achievementTextContainer = new ListTextSection(achievementsList);
 
         // Qualifications initializations
         String qualification1 = "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2";
@@ -80,7 +80,7 @@ public class MainResumeObjectModel {
         qualificationsList.add(qualification15);
         qualificationsList.add(qualification16);
         qualificationsList.add(qualification17);
-        ListTextContainer qualificationTextContainer = new ListTextContainer(qualificationsList);
+        ListTextSection qualificationTextContainer = new ListTextSection(qualificationsList);
 
         // Experience and Education initialization
         // Variables preparation
@@ -88,61 +88,49 @@ public class MainResumeObjectModel {
         String activity;
         String startDate;
         String endDate;
-        Position position;
+        String position;
         Establishment establishment;
-        List<Position> positionList;
+        List<String> positionList;
 
         // Experience initialization
         establishmentList = new LinkedList<>();
 
-        activity = "Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.";
-        startDate = "10/2013";
-        endDate = "Сейчас";
-        position = new Position(activity, startDate, endDate);
-        establishment = new Establishment("Java Online Projects", new Link("javaops", "http://javaops.ru/"));
+        position = "10/2013 - Сейчас Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.";
+        establishment = new Establishment("Java Online Projects", new Link( "http://javaops.ru/"));
         positionList = new LinkedList<>();
         positionList.add(position);
         establishment.setPositions(positionList);
         establishmentList.add(establishment);
 
-        activity = "Старший разработчик (backend). Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
-        startDate = "04/2012";
-        endDate = "10/2014";
-        position = new Position(activity, startDate, endDate);
-        establishment = new Establishment("Wrike", new Link("Wrike", "https://www.wrike.com/"));
+        position = "04/2012 - 10/2014 Старший разработчик (backend). Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
+        establishment = new Establishment("Wrike", new Link( "https://www.wrike.com/"));
         positionList = new LinkedList<>();
         positionList.add(position);
         establishment.setPositions(positionList);
         establishmentList.add(establishment);
 
-        EstablishmentContainer establishmentContainer = new EstablishmentContainer(establishmentList);
-        resume.addSection(SectionType.EXPERIENCE, new Section("EXPERIENCE", establishmentContainer));
+        ListEstablishmentSection listEstablishmentSection = new ListEstablishmentSection(establishmentList);
+        resume.addSection(SectionType.EXPERIENCE, listEstablishmentSection);
 
         // Education initialization
         establishmentList = new LinkedList<>();
 
-        activity = "\"Functional Programming Principles in Scala\" by Martin Odersky";
-        startDate = "03/2013";
-        endDate = "05/2013";
-        position = new Position(activity, startDate, endDate);
-        establishment = new Establishment("Coursera", new Link("Coursera", "https://www.coursera.org/course/progfun"));
+        position = "03/2013 - 05/2013 \"Functional Programming Principles in Scala\" by Martin Odersky";
+        establishment = new Establishment("Coursera", new Link("https://www.coursera.org/course/progfun"));
         positionList = new LinkedList<>();
         positionList.add(position);
         establishment.setPositions(positionList);
         establishmentList.add(establishment);
 
-        activity = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
-        startDate = "03/2011";
-        endDate = "04/2011";
-        position = new Position(activity, startDate, endDate);
-        establishment = new Establishment("Luxoft", new Link("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366"));
+        activity = "03/2011 - 04/2011 Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
+        establishment = new Establishment("Luxoft", new Link("http://www.luxoft-training.ru/training/catalog/course.html?ID=22366"));
         positionList = new LinkedList<>();
         positionList.add(position);
         establishment.setPositions(positionList);
         establishmentList.add(establishment);
 
-        EstablishmentContainer educationContainer = new EstablishmentContainer(establishmentList);
-        resume.addSection(SectionType.EDUCATION, new Section("EDUCATION", educationContainer));
+        listEstablishmentSection = new ListEstablishmentSection(establishmentList);
+        resume.addSection(SectionType.EDUCATION, listEstablishmentSection);
 
         // RESULT
         System.out.println(resume);
