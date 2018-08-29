@@ -44,7 +44,7 @@ public class MainResumeObjectModel {
         achievementsList.add(achievement6);
         ListTextSection achievementTextContainer = new ListTextSection(achievementsList);
 
-        // Qualifications initializations
+        // Qualification initialization
         String qualification1 = "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2";
         String qualification2 = "Version control: Subversion, Git, Mercury, ClearCase, Perforce";
         String qualification3 = "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle,";
@@ -82,22 +82,12 @@ public class MainResumeObjectModel {
         qualificationsList.add(qualification17);
         ListTextSection qualificationTextContainer = new ListTextSection(qualificationsList);
 
-        // Experience and Education initialization
-        // Variables preparation
-        List<Establishment> establishmentList;
-        String activity;
-        String startDate;
-        String endDate;
-        String position;
-        Establishment establishment;
-        List<String> positionList;
-
         // Experience initialization
-        establishmentList = new LinkedList<>();
+        List<Establishment> establishmentList = new LinkedList<>();
 
-        position = "10/2013 - Сейчас Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.";
-        establishment = new Establishment("Java Online Projects", new Link( "http://javaops.ru/"));
-        positionList = new LinkedList<>();
+        String position = "10/2013 - Сейчас Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.";
+        Establishment establishment = new Establishment("Java Online Projects", new Link( "http://javaops.ru/"));
+        List<String> positionList = new LinkedList<>();
         positionList.add(position);
         establishment.setPositions(positionList);
         establishmentList.add(establishment);
@@ -122,7 +112,7 @@ public class MainResumeObjectModel {
         establishment.setPositions(positionList);
         establishmentList.add(establishment);
 
-        activity = "03/2011 - 04/2011 Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
+        position = "03/2011 - 04/2011 Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
         establishment = new Establishment("Luxoft", new Link("http://www.luxoft-training.ru/training/catalog/course.html?ID=22366"));
         positionList = new LinkedList<>();
         positionList.add(position);
