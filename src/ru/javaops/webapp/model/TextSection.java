@@ -1,17 +1,12 @@
 package ru.javaops.webapp.model;
 
+import java.util.Objects;
+
 public class TextSection extends Section {
     private String content;
 
     public TextSection(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
+        Objects.requireNonNull(content, "Parameter content must be not null.");
         this.content = content;
     }
 

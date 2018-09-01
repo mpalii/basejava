@@ -85,18 +85,20 @@ public class MainResumeObjectModel {
         // Experience initialization
         List<Establishment> establishmentList = new LinkedList<>();
 
-        String position = "10/2013 - Сейчас Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.";
-        Establishment establishment = new Establishment("Java Online Projects", new Link( "http://javaops.ru/"));
-        List<String> positionList = new LinkedList<>();
-        positionList.add(position);
-        establishment.setPositions(positionList);
+        String name = "Java Online Projects";
+        String position = "Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.";
+        String startDate = "10/2013";
+        String endDate = "Сейчас";
+        String url = "http://javaops.ru";
+        Establishment establishment = new Establishment(name, url, position, startDate, endDate);
         establishmentList.add(establishment);
 
-        position = "04/2012 - 10/2014 Старший разработчик (backend). Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
-        establishment = new Establishment("Wrike", new Link( "https://www.wrike.com/"));
-        positionList = new LinkedList<>();
-        positionList.add(position);
-        establishment.setPositions(positionList);
+        name = "Wrike";
+        position = "Старший разработчик (backend). Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
+        startDate = "04/2012";
+        endDate = "10/2014";
+        url = "https://www.wrike.com";
+        establishment = new Establishment(name, url, position, startDate, endDate);
         establishmentList.add(establishment);
 
         ListEstablishmentSection listEstablishmentSection = new ListEstablishmentSection(establishmentList);
@@ -105,18 +107,20 @@ public class MainResumeObjectModel {
         // Education initialization
         establishmentList = new LinkedList<>();
 
-        position = "03/2013 - 05/2013 \"Functional Programming Principles in Scala\" by Martin Odersky";
-        establishment = new Establishment("Coursera", new Link("https://www.coursera.org/course/progfun"));
-        positionList = new LinkedList<>();
-        positionList.add(position);
-        establishment.setPositions(positionList);
+        name = "Coursera";
+        position = "\"Functional Programming Principles in Scala\" by Martin Odersky";
+        startDate = "03/2013";
+        endDate = "05/2013";
+        url = "https://www.coursera.org/course/progfun";
+        establishment = new Establishment(name, url, position, startDate, endDate);
         establishmentList.add(establishment);
 
-        position = "03/2011 - 04/2011 Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
-        establishment = new Establishment("Luxoft", new Link("http://www.luxoft-training.ru/training/catalog/course.html?ID=22366"));
-        positionList = new LinkedList<>();
-        positionList.add(position);
-        establishment.setPositions(positionList);
+        name = "Luxoft";
+        position = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
+        startDate = "03/2011";
+        endDate = "04/2011";
+        url = "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366";
+        establishment = new Establishment(name, url, position, startDate, endDate);
         establishmentList.add(establishment);
 
         listEstablishmentSection = new ListEstablishmentSection(establishmentList);

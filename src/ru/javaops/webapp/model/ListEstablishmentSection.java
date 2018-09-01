@@ -1,19 +1,13 @@
 package ru.javaops.webapp.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ListEstablishmentSection extends Section {
     private List<Establishment> establishmentContent;
 
     public ListEstablishmentSection(List<Establishment> establishmentContent) {
-        this.establishmentContent = establishmentContent;
-    }
-
-    public List<Establishment> getEstablishmentContent() {
-        return establishmentContent;
-    }
-
-    public void setEstablishmentContent(List<Establishment> establishmentContent) {
+        Objects.requireNonNull(establishmentContent, "Parameter establishmentContent must be not null.");
         this.establishmentContent = establishmentContent;
     }
 
@@ -34,10 +28,6 @@ public class ListEstablishmentSection extends Section {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Establishment element : establishmentContent) {
-            stringBuilder.append(element).append("\n");
-        }
-        return stringBuilder.toString();
+        return establishmentContent.toString() + "\n";
     }
 }

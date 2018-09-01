@@ -1,71 +1,41 @@
 package ru.javaops.webapp.model;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Objects;
 
 public class Establishment {
-    private String name;
+    private String title;
+    private String description;
     private Link link;
-    private List<String> positions;
+    private String startDate;
+    private String endDate;
 
-    public Establishment(String name, Link link) {
-        positions = new LinkedList<>();
-        this.name = name;
-        this.link = link;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Link getLink() {
-        return link;
-    }
-
-    public void setLink(Link link) {
-        this.link = link;
-    }
-
-    public List<String> getPositions() {
-        return positions;
-    }
-
-    public void setPositions(List<String> positions) {
-        this.positions = positions;
+    public Establishment(String name, String url, String position, String startDate, String endDate) {
+        this.title = name;
+        this.description = position;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.link = new Link(url);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Establishment that = (Establishment) o;
-
-        if (!name.equals(that.name)) return false;
-        if (link != null ? !link.equals(that.link) : that.link != null) return false;
-        return positions.equals(that.positions);
+        return Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(link, that.link) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate);
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + (link != null ? link.hashCode() : 0);
-        result = 31 * result + positions.hashCode();
-        return result;
+        return Objects.hash(title, description, link, startDate, endDate);
     }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(name).append("\n");
-        for (String position : positions) {
-            stringBuilder.append(position).append("\n");
-        }
-//        stringBuilder.append("\n");
-        return stringBuilder.toString();
+        return title + "\n" + startDate + " - " + endDate + " " + description + "\n";
     }
 }
