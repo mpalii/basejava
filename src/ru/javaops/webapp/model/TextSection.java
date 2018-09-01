@@ -2,8 +2,8 @@ package ru.javaops.webapp.model;
 
 import java.util.Objects;
 
-public class TextSection extends Section {
-    private String content;
+public class TextSection implements Section {
+    private final String content;
 
     public TextSection(String content) {
         Objects.requireNonNull(content, "Parameter content must be not null.");
@@ -14,15 +14,13 @@ public class TextSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TextSection that = (TextSection) o;
-
-        return content.equals(that.content);
+        return Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return content.hashCode();
+        return Objects.hash(content);
     }
 
     @Override

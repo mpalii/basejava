@@ -3,8 +3,8 @@ package ru.javaops.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListTextSection extends Section {
-    private List<String> listContent;
+public class ListTextSection implements Section {
+    private final List<String> listContent;
 
     public ListTextSection(List<String> listContent) {
         Objects.requireNonNull(listContent, "Parameter listContent must be not null.");
@@ -15,15 +15,13 @@ public class ListTextSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ListTextSection that = (ListTextSection) o;
-
-        return listContent.equals(that.listContent);
+        return Objects.equals(listContent, that.listContent);
     }
 
     @Override
     public int hashCode() {
-        return listContent.hashCode();
+        return Objects.hash(listContent);
     }
 
     @Override
