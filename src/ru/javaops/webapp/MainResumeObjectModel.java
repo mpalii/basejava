@@ -3,6 +3,7 @@ package ru.javaops.webapp;
 import ru.javaops.webapp.model.ContactType;
 import ru.javaops.webapp.model.Establishment;
 import ru.javaops.webapp.model.ListEstablishmentSection;
+import ru.javaops.webapp.model.ListTextSection;
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.model.SectionType;
 import ru.javaops.webapp.model.TextSection;
@@ -43,6 +44,8 @@ public class MainResumeObjectModel {
                 "Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."
         );
 
+        resume.addSection(SectionType.ACHIEVEMENT, new ListTextSection(achievementsList));
+
         // Qualification initialization
         List<String> qualificationsList = Arrays.asList(
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
@@ -63,6 +66,8 @@ public class MainResumeObjectModel {
                 "программирования",
                 "Родной русский, английский \"upper intermediate\""
         );
+
+        resume.addSection(SectionType.QUALIFICATIONS, new ListTextSection(qualificationsList));
 
         // Experience initialization
         List<Establishment> establishmentList = new LinkedList<>();
