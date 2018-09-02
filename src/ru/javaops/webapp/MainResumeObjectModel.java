@@ -116,6 +116,8 @@ public class MainResumeObjectModel {
                 )
         );
 
+        resume.addSection(SectionType.EDUCATION, new ListEstablishmentSection(establishmentList));
+
         // RESULT
         System.out.println(resume);
     }
