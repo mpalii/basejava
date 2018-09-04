@@ -4,11 +4,13 @@ import ru.javaops.webapp.model.ContactType;
 import ru.javaops.webapp.model.Establishment;
 import ru.javaops.webapp.model.ListEstablishmentSection;
 import ru.javaops.webapp.model.ListTextSection;
+import ru.javaops.webapp.model.Position;
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.model.SectionType;
 import ru.javaops.webapp.model.TextSection;
+import ru.javaops.webapp.util.DateUtil;
 
-import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,25 +74,33 @@ public class MainResumeObjectModel {
         // Experience initialization
         List<Establishment> establishmentList = new LinkedList<>();
 
+        List<Position> listPositions = new LinkedList<>();
+        listPositions.add(new Position("Автор проекта.",
+                "Создание, организация и проведение Java онлайн проектов и стажировок.",
+                DateUtil.of(2013, Month.OCTOBER),
+                DateUtil.now())
+        );
+
         establishmentList.add(
                 new Establishment(
                         "Java Online Projects",
                         "http://javaops.ru",
-                        "Автор проекта.",
-                        "Создание, организация и проведение Java онлайн проектов и стажировок.",
-                        LocalDate.of(2013, 10, 1),
-                        LocalDate.now()
+                        listPositions
                 )
+        );
+
+        listPositions = new LinkedList<>();
+        listPositions.add(new Position("Старший разработчик (backend).",
+                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
+                DateUtil.of(2012, Month.APRIL),
+                DateUtil.of(2014, Month.OCTOBER))
         );
 
         establishmentList.add(
                 new Establishment(
                         "Wrike",
                         "https://www.wrike.com",
-                        "Старший разработчик (backend).",
-                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
-                        LocalDate.of(2012, 4, 1),
-                        LocalDate.of(2014, 10, 1)
+                        listPositions
                 )
         );
 
@@ -99,25 +109,33 @@ public class MainResumeObjectModel {
         // Education initialization
         establishmentList = new LinkedList<>();
 
+        listPositions = new LinkedList<>();
+        listPositions.add(new Position(null,
+                "\"Functional Programming Principles in Scala\" by Martin Odersky",
+                DateUtil.of(2013, Month.MARCH),
+                DateUtil.of(2013, Month.MAY))
+        );
+
         establishmentList.add(
                 new Establishment(
                         "Coursera",
                         "https://www.coursera.org/course/progfun",
-                        null,
-                        "\"Functional Programming Principles in Scala\" by Martin Odersky",
-                        LocalDate.of(2013, 3, 1),
-                        LocalDate.of(2013, 5, 1)
+                        listPositions
                 )
+        );
+
+        listPositions = new LinkedList<>();
+        listPositions.add(new Position(null,
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
+                DateUtil.of(2011, Month.MARCH),
+                DateUtil.of(2011,  Month.APRIL))
         );
 
         establishmentList.add(
                 new Establishment(
                         "Luxoft",
                         "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
-                        null,
-                        "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
-                        LocalDate.of(2011, 3, 1),
-                        LocalDate.of(2011, 4, 1)
+                        listPositions
                 )
         );
 
