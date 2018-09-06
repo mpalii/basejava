@@ -80,7 +80,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     // TO DO with executeREAD abstraction
     @Override
     protected List<Resume> executeStorageAsList() {
-        File currentFile = null;
         List<Resume> resumeList = new LinkedList<>();
         File[] fileList = directory.listFiles();
         if (fileList == null) {
@@ -89,7 +88,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         for (File file : fileList) {
             resumeList.add(executeGet(file));
         }
-
         return resumeList;
     }
 
