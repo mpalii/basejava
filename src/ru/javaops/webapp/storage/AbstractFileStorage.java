@@ -44,7 +44,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             if (!file.createNewFile()) {
                 throw new StorageException("Creating exception", resume.getUuid());
             }
-            executeWriteFile(file, resume);
+            executeUpdate(file, resume);
         } catch (IOException e) {
             throw new StorageException("IO Error", file.getName(), e);
         }
@@ -81,41 +81,37 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> executeStorageAsList() {
         File currentFile = null;
-        try {
-            List<Resume> resumeList = new LinkedList<>();
-            File[] fileList = directory.listFiles();
-            if (fileList != null) {
-                for (File file : fileList) {
-                    if (file.isFile()) {
-                        currentFile = file;
-                        resumeList.add(executeReadFile(file));
-                    }
-                }
-            }
-            return resumeList;
-        } catch (IOException e) {
-            throw new StorageException("IO Exception", currentFile.getName(), e);
+        List<Resume> resumeList = new LinkedList<>();
+        File[] fileList = directory.listFiles();
+        if (fileList == null) {
+            throw new StorageException("File list of directory is null", null);
         }
+        for (File file : fileList) {
+            resumeList.add(executeGet(file));
+        }
+
+        return resumeList;
     }
 
     // TO DO
     @Override
     public void clear() {
         File[] fileList = directory.listFiles();
-        if (fileList != null) {
-            for (File file : fileList) {
-                if (file.isFile()) {
-                    if (!file.delete()) {
-                        throw new StorageException("Deleting exception", file.getName());
-                    }
-                }
-            }
+        if (fileList == null) {
+            throw new StorageException("File list of directory is null", null);
+        }
+        for (File file : fileList) {
+            executeDelete(file);
         }
     }
 
     // TO DO
     @Override
     public int size() {
-        return directory.list().length;
+        String[] fileList = directory.list();
+        if (fileList == null) {
+            throw new StorageException("File list of directory is null", null);
+        }
+        return fileList.length;
     }
 }

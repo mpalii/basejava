@@ -61,22 +61,20 @@ public class MainFile {
 
         System.out.println("\nbuildCatalogTree() method test!");
         File file3 = new File("C:\\Projects\\basejava\\src");
-        buildCatalogTree(file3, "");
+        buildCatalogTree(file3);
     }
 
-    private static void buildCatalogTree(File file, String indent) {
-        System.out.println(indent + file.getName() + ":");
-        indent += "\t";
+    private static void buildCatalogTree(File file) {
+        System.out.println(file.getName() + ":");
         File[] fileList = file.listFiles();
         if (fileList == null) {
             return;
         }
         for (File someFile : fileList) {
-            if (someFile.isFile()) {
-                System.out.println(indent + someFile.getName());
-            }
             if (someFile.isDirectory()) {
-                buildCatalogTree(someFile, "\t");
+                buildCatalogTree(someFile);
+            } else {
+                System.out.println(someFile.getName());
             }
         }
     }
