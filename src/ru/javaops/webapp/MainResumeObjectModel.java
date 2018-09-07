@@ -4,7 +4,6 @@ import ru.javaops.webapp.model.ContactType;
 import ru.javaops.webapp.model.Establishment;
 import ru.javaops.webapp.model.ListEstablishmentSection;
 import ru.javaops.webapp.model.ListTextSection;
-import ru.javaops.webapp.model.Position;
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.model.SectionType;
 import ru.javaops.webapp.model.TextSection;
@@ -14,6 +13,8 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import static ru.javaops.webapp.model.Establishment.Position;
 
 public class MainResumeObjectModel {
     public static void main(String[] args) {

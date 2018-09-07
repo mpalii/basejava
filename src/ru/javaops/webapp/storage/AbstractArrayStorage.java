@@ -16,7 +16,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected abstract void deleteResumeInPosition(int index);
 
-    protected abstract Integer executeGetKey(String uuid);
+    protected abstract Integer executeGetSearchKey(String uuid);
 
     @Override
     public void clear() {

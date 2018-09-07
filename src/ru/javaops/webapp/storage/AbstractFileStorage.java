@@ -24,11 +24,27 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected File executeGetKey(String uuid) {
+    protected File executeGetSearchKey(String uuid) {
         return new File(directory, uuid);
     }
 
-    // TO DO without creating of file
+    @Override
+    protected boolean executeIsExistingKey(File file) {
+        return file.exists();
+    }
+
+    @Override
+    protected void executeSave(File file, Resume resume) {
+        try {
+            if (!file.createNewFile()) {
+                throw new StorageException("Creating exception", resume.getUuid());
+            }
+        } catch (IOException e) {
+            throw new StorageException("IO Error", file.getName(), e);
+        }
+        executeUpdate(file, resume);
+    }
+
     @Override
     protected void executeUpdate(File file, Resume resume) {
         try {
@@ -38,21 +54,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
     }
 
-    @Override
-    protected void executeSave(File file, Resume resume) {
-        try {
-            if (!file.createNewFile()) {
-                throw new StorageException("Creating exception", resume.getUuid());
-            }
-            executeUpdate(file, resume);
-        } catch (IOException e) {
-            throw new StorageException("IO Error", file.getName(), e);
-        }
-    }
-
     abstract void executeWriteFile(File file, Resume resume) throws IOException;
 
-    // TO DO with reference to abstract method
     @Override
     protected Resume executeGet(File file) {
         try {
@@ -64,20 +67,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     abstract Resume executeReadFile(File file) throws IOException;
 
-    // TO DO
-    @Override
-    protected void executeDelete(File file) {
-        if (!file.delete()) {
-            throw new StorageException("Deleting exception", file.getName());
-        }
-    }
-
-    @Override
-    protected boolean executeIsExistingKey(File file) {
-        return file.exists();
-    }
-
-    // TO DO with executeREAD abstraction
     @Override
     protected List<Resume> executeStorageAsList() {
         List<Resume> resumeList = new LinkedList<>();
@@ -91,7 +80,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return resumeList;
     }
 
-    // TO DO
     @Override
     public void clear() {
         File[] fileList = directory.listFiles();
@@ -103,7 +91,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
     }
 
-    // TO DO
+    @Override
+    protected void executeDelete(File file) {
+        if (!file.delete()) {
+            throw new StorageException("Deleting exception", file.getName());
+        }
+    }
+
     @Override
     public int size() {
         String[] fileList = directory.list();

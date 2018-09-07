@@ -21,7 +21,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected Resume executeGetKey(String uuid) {
+    protected Resume executeGetSearchKey(String uuid) {
 //        Resume key = storage.get(uuid);
 //        return key != null ? key : new Resume(uuid, "MOCK NAME");
         return storage.get(uuid);
