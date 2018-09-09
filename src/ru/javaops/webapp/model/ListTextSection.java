@@ -1,5 +1,6 @@
 package ru.javaops.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,6 +10,10 @@ public class ListTextSection implements Section {
     public ListTextSection(List<String> listContent) {
         Objects.requireNonNull(listContent, "Parameter listContent must be not null.");
         this.listContent = listContent;
+    }
+
+    public ListTextSection(String... items) {
+        this(Arrays.asList(items));
     }
 
     @Override

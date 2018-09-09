@@ -1,6 +1,7 @@
 package ru.javaops.webapp.model;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,6 +15,11 @@ public class Establishment {
         establishment = new Link(name, url);
         positions = list;
     }
+
+    public Establishment(String name, String url, Position... positions) {
+        this(name, url, Arrays.asList(positions));
+    }
+
 
     @Override
     public boolean equals(Object o) {

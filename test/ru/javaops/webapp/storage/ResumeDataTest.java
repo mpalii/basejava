@@ -13,7 +13,7 @@ import java.util.List;
 
 import static ru.javaops.webapp.model.Establishment.Position;
 
-public final class ResumeDataTest {
+final class ResumeDataTest {
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
@@ -28,7 +28,7 @@ public final class ResumeDataTest {
                 "Trainer",
                 "Work in fitness club",
                 DateUtil.of(2015, Month.OCTOBER),
-                DateUtil.now()
+                DateUtil.NOW
         ));
         List<Establishment> establishmentList = new LinkedList<>();
         establishmentList.add(new Establishment("FITTERRA", null, positionList));
@@ -42,7 +42,7 @@ public final class ResumeDataTest {
                 "Engineer",
                 "Repair of mechanic equipment",
                 DateUtil.of(2011, Month.NOVEMBER),
-                DateUtil.now()
+                DateUtil.NOW
         ));
         establishmentList = new LinkedList<>();
         establishmentList.add(new Establishment("InterPIPE", "http://interpipe.biz/", positionList));
@@ -56,7 +56,7 @@ public final class ResumeDataTest {
                 "Cost estimator",
                 "Cost planning",
                 DateUtil.of(2012, Month.DECEMBER),
-                DateUtil.now()
+                DateUtil.NOW
         ));
         establishmentList = new LinkedList<>();
         establishmentList.add(new Establishment("DONBUDMONTAG", null, positionList));
@@ -70,7 +70,7 @@ public final class ResumeDataTest {
                 "Operator",
                 "Solving of customer problems",
                 DateUtil.of(2014, Month.MARCH),
-                DateUtil.now()
+                DateUtil.NOW
         ));
         establishmentList = new LinkedList<>();
         establishmentList.add(new Establishment("NOVA POSHTA", "novaposhta.ua", positionList));

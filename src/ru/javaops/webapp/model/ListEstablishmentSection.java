@@ -1,5 +1,6 @@
 package ru.javaops.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,6 +10,10 @@ public class ListEstablishmentSection implements Section {
     public ListEstablishmentSection(List<Establishment> establishmentContent) {
         Objects.requireNonNull(establishmentContent, "Parameter establishmentContent must be not null.");
         this.establishmentContent = establishmentContent;
+    }
+
+    public ListEstablishmentSection(Establishment... items) {
+        this(Arrays.asList(items));
     }
 
     @Override
