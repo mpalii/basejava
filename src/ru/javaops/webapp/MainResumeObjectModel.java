@@ -99,6 +99,38 @@ public class MainResumeObjectModel {
                                         DateUtil.of(2010, Month.DECEMBER),
                                         DateUtil.of(2012, Month.APRIL)
                                 )
+                        ),
+                        new Establishment("Yota", "https://www.yota.ru/",
+                                new Position(
+                                        "Ведущий специалист",
+                                        "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)",
+                                        DateUtil.of(2008, Month.JULY),
+                                        DateUtil.of(2010, Month.DECEMBER)
+                                )
+                        ),
+                        new Establishment("Enkata", "http://enkata.com/",
+                                new Position(
+                                        "Разработчик ПО",
+                                        "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining).",
+                                        DateUtil.of(2007, Month.MARCH),
+                                        DateUtil.of(2008, Month.JULY)
+                                )
+                        ),
+                        new Establishment("Siemens AG", "https://www.siemens.com/ru/ru/home.html",
+                                new Position(
+                                        "Разработчик ПО",
+                                        "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).",
+                                        DateUtil.of(2005, Month.JANUARY),
+                                        DateUtil.of(2007, Month.FEBRUARY)
+                                )
+                        ),
+                        new Establishment("Alcatel", "http://www.alcatel.ru/",
+                                new Position(
+                                        "Инженер по аппаратному и программному тестированию",
+                                        "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).",
+                                        DateUtil.of(1997, Month.SEPTEMBER),
+                                        DateUtil.of(2005, Month.JANUARY)
+                                )
                         )
                 )
         );
@@ -130,6 +162,14 @@ public class MainResumeObjectModel {
                                         DateUtil.of(2005, Month.APRIL)
                                 )
                         ),
+                        new Establishment("Alcatel", "http://www.alcatel.ru/",
+                                new Position(
+                                        null,
+                                        "6 месяцев обучения цифровым телефонным сетям (Москва)",
+                                        DateUtil.of(1997, Month.SEPTEMBER),
+                                        DateUtil.of(1998, Month.APRIL)
+                                )
+                        ),
                         new Establishment("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
                                 new Position(
                                         null,
@@ -142,6 +182,14 @@ public class MainResumeObjectModel {
                                         "Инженер (программист Fortran, C)",
                                         DateUtil.of(1987, Month.SEPTEMBER),
                                         DateUtil.of(1993, Month.JULY)
+                                )
+                        ),
+                        new Establishment("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
+                                new Position(
+                                        null,
+                                        "Закончил с отличием",
+                                        DateUtil.of(1984, Month.SEPTEMBER),
+                                        DateUtil.of(1987, Month.JUNE)
                                 )
                         )
                 )
