@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListEstablishmentSection implements Section {
+    private static final long serialVersionUID = 1L;
+
     private final List<Establishment> establishmentContent;
 
     public ListEstablishmentSection(List<Establishment> establishmentContent) {

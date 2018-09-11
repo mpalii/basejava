@@ -3,8 +3,7 @@ package ru.javaops.webapp.storage;
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -48,24 +47,24 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void executeUpdate(File file, Resume resume) {
         try {
-            executeWriteFile(file, resume);
+            executeWriteFile(new BufferedOutputStream(new FileOutputStream(file)), resume);
         } catch (IOException e) {
             throw new StorageException("IO Error", file.getName(), e);
         }
     }
 
-    abstract void executeWriteFile(File file, Resume resume) throws IOException;
+    abstract void executeWriteFile(OutputStream outputStream, Resume resume) throws IOException;
 
     @Override
     protected Resume executeGet(File file) {
         try {
-            return executeReadFile(file);
+            return executeReadFile(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO Exception", file.getName(), e);
         }
     }
 
-    abstract Resume executeReadFile(File file) throws IOException;
+    abstract Resume executeReadFile(InputStream inputStream) throws IOException;
 
     @Override
     protected List<Resume> executeStorageAsList() {
