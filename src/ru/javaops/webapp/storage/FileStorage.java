@@ -3,16 +3,23 @@ package ru.javaops.webapp.storage;
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private File directory;
+    private ResumeSerializer serializer;
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory, ResumeSerializer resumeSerializer) {
         Objects.requireNonNull(directory, "directory must be not null");
+        Objects.requireNonNull(resumeSerializer, "serializer must be not null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -20,6 +27,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException("directory is not readable/writable");
         }
         this.directory = directory;
+        serializer = resumeSerializer;
     }
 
     @Override
@@ -47,24 +55,20 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void executeUpdate(File file, Resume resume) {
         try {
-            executeWriteFile(new BufferedOutputStream(new FileOutputStream(file)), resume);
+            serializer.executeWriteFile(new BufferedOutputStream(new FileOutputStream(file)), resume);
         } catch (IOException e) {
             throw new StorageException("IO Error", file.getName(), e);
         }
     }
 
-    abstract void executeWriteFile(OutputStream outputStream, Resume resume) throws IOException;
-
     @Override
     protected Resume executeGet(File file) {
         try {
-            return executeReadFile(new BufferedInputStream(new FileInputStream(file)));
+            return serializer.executeReadFile(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO Exception", file.getName(), e);
         }
     }
-
-    abstract Resume executeReadFile(InputStream inputStream) throws IOException;
 
     @Override
     protected List<Resume> executeStorageAsList() {

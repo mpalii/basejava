@@ -4,24 +4,26 @@ import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
+    private ResumeSerializer serializer;
 
-    public AbstractPathStorage(String dir) {
+    public PathStorage(String dir, ResumeSerializer resumeSerializer) {
         Objects.requireNonNull(dir, "directory must be not null");
+        Objects.requireNonNull(resumeSerializer, "serializer must be not null");
         directory = Paths.get(dir);
-        if(!Files.isExecutable(directory) || !Files.isReadable(directory) || !Files.isWritable(directory)) {
+        if (!Files.isExecutable(directory) || !Files.isReadable(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory, or access denied");
         }
+        serializer = resumeSerializer;
     }
 
     @Override
@@ -42,24 +44,20 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void executeUpdate(Path path, Resume resume) {
         try {
-            executeWriteFile(Files.newOutputStream(path), resume);
+            serializer.executeWriteFile(Files.newOutputStream(path), resume);
         } catch (IOException e) {
             throw new StorageException("File saving exception", resume.getUuid(), e);
         }
     }
 
-    abstract void executeWriteFile(OutputStream outputStream, Resume resume) throws IOException;
-
     @Override
     protected Resume executeGet(Path path) {
         try {
-            return executeReadFile(Files.newInputStream(path));
+            return serializer.executeReadFile(Files.newInputStream(path));
         } catch (IOException e) {
             throw new StorageException("File reading exception", null, e);
         }
     }
-
-    abstract Resume executeReadFile(InputStream inputStream) throws IOException;
 
     @Override
     protected void executeDelete(Path path) {
@@ -72,13 +70,19 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean executeIsExistingKey(Path path) {
-        return !Files.isDirectory(path);
+//        return !Files.isDirectory(path);
+        return Files.isRegularFile(path);
     }
 
     @Override
     protected List<Resume> executeStorageAsList() {
         try {
-            return  Arrays.asList((Resume[]) Files.list(directory).toArray());
+            Object[] arr = Files.list(directory).toArray();
+            List<Resume> resultList = new ArrayList<>();
+            for (Object element : arr) {
+                resultList.add(executeGet((Path) element));
+            }
+            return resultList;
         } catch (IOException e) {
             throw new StorageException("IOException", null, e);
         }
