@@ -1,4 +1,4 @@
-package ru.javaops.webapp.storage;
+package ru.javaops.webapp.storage.serializers;
 
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
@@ -9,16 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-public class ObjectStreamStorage implements ResumeSerializer {
-
-    public static ObjectStreamStorage create() {
-        return new ObjectStreamStorage();
-    }
-
-    private ObjectStreamStorage() {
-
-    }
-
+public class ObjectSerializer implements ResumeSerializer {
     @Override
     public void executeWriteFile(OutputStream outputStream, Resume resume) throws IOException {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {

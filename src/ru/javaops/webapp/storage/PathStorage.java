@@ -2,15 +2,17 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
+import ru.javaops.webapp.storage.serializers.ResumeSerializer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
@@ -44,7 +46,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void executeUpdate(Path path, Resume resume) {
         try {
-            serializer.executeWriteFile(Files.newOutputStream(path), resume);
+            serializer.executeWriteFile(new BufferedOutputStream(Files.newOutputStream(path)), resume);
         } catch (IOException e) {
             throw new StorageException("File saving exception", resume.getUuid(), e);
         }
@@ -53,7 +55,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume executeGet(Path path) {
         try {
-            return serializer.executeReadFile(Files.newInputStream(path));
+            return serializer.executeReadFile(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("File reading exception", null, e);
         }
@@ -76,16 +78,25 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> executeStorageAsList() {
+        List<Resume> resumeList = null;
         try {
-            Object[] arr = Files.list(directory).toArray();
-            List<Resume> resultList = new ArrayList<>();
-            for (Object element : arr) {
-                resultList.add(executeGet((Path) element));
-            }
-            return resultList;
+            resumeList = Files.list(directory).map(this::executeGet).collect(Collectors.toList());
+            return resumeList;
         } catch (IOException e) {
-            throw new StorageException("IOException", null, e);
+            e.printStackTrace();
         }
+        return resumeList;
+
+//        try {
+//            Object[] arr = Files.list(directory).toArray();
+//            List<Resume> resultList = new ArrayList<>();
+//            for (Object element : arr) {
+//                resultList.add(executeGet((Path) element));
+//            }
+//            return resultList;
+//        } catch (IOException e) {
+//            throw new StorageException("IOException", null, e);
+//        }
     }
 
     @Override

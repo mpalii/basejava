@@ -1,4 +1,4 @@
-package ru.javaops.webapp.storage;
+package ru.javaops.webapp.storage.serializers;
 
 import ru.javaops.webapp.model.Resume;
 
@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface ResumeSerializer {
-
     void executeWriteFile(OutputStream outputStream, Resume resume) throws IOException;
-
     Resume executeReadFile(InputStream inputStream) throws IOException;
 }

@@ -2,6 +2,7 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
+import ru.javaops.webapp.storage.serializers.ResumeSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
