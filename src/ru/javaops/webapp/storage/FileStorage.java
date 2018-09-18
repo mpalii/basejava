@@ -76,7 +76,7 @@ public class FileStorage extends AbstractStorage<File> {
         List<Resume> resumeList = new LinkedList<>();
         File[] fileList = directory.listFiles();
         if (fileList == null) {
-            throw new StorageException("File list of directory is null", null);
+            throw new StorageException("File list of directory is null");
         }
         for (File file : fileList) {
             resumeList.add(executeGet(file));
@@ -88,7 +88,7 @@ public class FileStorage extends AbstractStorage<File> {
     public void clear() {
         File[] fileList = directory.listFiles();
         if (fileList == null) {
-            throw new StorageException("File list of directory is null", null);
+            throw new StorageException("File list of directory is null");
         }
         for (File file : fileList) {
             executeDelete(file);
@@ -106,7 +106,7 @@ public class FileStorage extends AbstractStorage<File> {
     public int size() {
         String[] fileList = directory.list();
         if (fileList == null) {
-            throw new StorageException("File list of directory is null", null);
+            throw new StorageException("File list of directory is null");
         }
         return fileList.length;
     }
