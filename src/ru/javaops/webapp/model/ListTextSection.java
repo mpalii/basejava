@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ListTextSection implements Section {
+public class ListTextSection extends Section {
     private static final long serialVersionUID = 1L;
 
-    private final List<String> listContent;
+    private List<String> listContent;
+
+    public ListTextSection() {
+    }
 
     public ListTextSection(List<String> listContent) {
         Objects.requireNonNull(listContent, "Parameter listContent must be not null.");

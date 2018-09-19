@@ -11,7 +11,9 @@ import org.junit.runners.Suite;
         MapUuidStorageTest.class,
         MapResumeStorageTest.class,
         PathObjectSerializerTest.class,
-        FileObjectSerializerTest.class
+        FileObjectSerializerTest.class,
+        PathXmlSerializerTest.class,
+        FileXmlSerializerTest.class
 })
 public class SuiteTest {
 
