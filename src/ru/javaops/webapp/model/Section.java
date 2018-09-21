@@ -8,6 +8,6 @@ import java.io.Serializable;
  * Interface marker, class container.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-abstract class Section implements Serializable {
+public abstract class Section implements Serializable {
 
 }
