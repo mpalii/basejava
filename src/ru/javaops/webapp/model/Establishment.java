@@ -32,6 +32,13 @@ public class Establishment implements Serializable {
         this(name, url, Arrays.asList(positions));
     }
 
+    public Link getEstablishment() {
+        return establishment;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -72,6 +79,22 @@ public class Establishment implements Serializable {
             this.description = description;
             this.startDate = startDate;
             this.endDate = endDate;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         @Override

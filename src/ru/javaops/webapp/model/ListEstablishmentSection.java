@@ -21,6 +21,10 @@ public class ListEstablishmentSection extends Section {
         this(Arrays.asList(items));
     }
 
+    public List<Establishment> getEstablishmentContent() {
+        return establishmentContent;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

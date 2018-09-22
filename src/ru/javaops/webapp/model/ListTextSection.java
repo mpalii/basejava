@@ -21,6 +21,10 @@ public class ListTextSection extends Section {
         this(Arrays.asList(items));
     }
 
+    public List<String> getListContent() {
+        return listContent;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
