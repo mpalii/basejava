@@ -15,7 +15,9 @@ import org.junit.runners.Suite;
         PathXmlSerializerTest.class,
         FileXmlSerializerTest.class,
         PathJsonSerializerTest.class,
-        FileJsonSerializerTest.class
+        FileJsonSerializerTest.class,
+        PathDataSerializerTest.class,
+        FileDataSerializerTest.class
 })
 public class SuiteTest {
 

@@ -44,10 +44,10 @@ public class DataSerializer implements ResumeSerializer {
                 for (Map.Entry<SectionType, Section> pair : sections.entrySet()) {
                     String sectionType = pair.getKey().name();
                     dataOutputStream.writeUTF(sectionType);
-                    if (sectionType.equals(TextSection.class.getSimpleName())) {
+                    if (sectionType.equals(SectionType.OBJECTIVE.name()) || sectionType.equals(SectionType.PERSONAL.name())) {
                         dataOutputStream.writeUTF(((TextSection) pair.getValue()).getContent());
                     }
-                    if (sectionType.equals(ListTextSection.class.getSimpleName())) {
+                    if (sectionType.equals(SectionType.ACHIEVEMENT.name()) || sectionType.equals(SectionType.QUALIFICATIONS.name())) {
                         List<String> stringList = ((ListTextSection) pair.getValue()).getListContent();
                         dataOutputStream.writeInt(stringList.size());
                         if (stringList.size() != 0) {
@@ -56,13 +56,18 @@ public class DataSerializer implements ResumeSerializer {
                             }
                         }
                     }
-                    if (sectionType.equals(ListEstablishmentSection.class.getSimpleName())) {
+                    if (sectionType.equals(SectionType.EXPERIENCE.name()) || sectionType.equals(SectionType.EDUCATION.name())) {
                         List<Establishment> establishmentList = ((ListEstablishmentSection) pair.getValue()).getEstablishmentContent();
                         dataOutputStream.writeInt(establishmentList.size());
                         if (establishmentList.size() != 0) {
                             for (Establishment element : establishmentList) {
                                 dataOutputStream.writeUTF(element.getEstablishment().getName());
-                                dataOutputStream.writeUTF(element.getEstablishment().getUrl());
+                                String url = element.getEstablishment().getUrl();
+                                if (url != null) {
+                                    dataOutputStream.writeUTF(url);
+                                } else {
+                                    dataOutputStream.writeUTF("null");
+                                }
                                 List<Establishment.Position> positionList = element.getPositions();
                                 dataOutputStream.writeInt(positionList.size());
                                 if (positionList.size() != 0) {
@@ -98,11 +103,11 @@ public class DataSerializer implements ResumeSerializer {
             size = dataInputStream.readInt();
             for (int i = 0; i < size; i++) {
                 String sectionType = dataInputStream.readUTF();
-                if (sectionType.equals(TextSection.class.getSimpleName())) {
+                if (sectionType.equals(SectionType.OBJECTIVE.name()) || sectionType.equals(SectionType.PERSONAL.name())) {
                     String content = dataInputStream.readUTF();
                     resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
                 }
-                if (sectionType.equals(ListTextSection.class.getSimpleName())) {
+                if (sectionType.equals(SectionType.ACHIEVEMENT.name()) || sectionType.equals(SectionType.QUALIFICATIONS.name())) {
                     int listSize = dataInputStream.readInt();
                     List<String> stringList = new ArrayList<>(listSize);
                     for (int j = 0; j < listSize; j++) {
@@ -110,12 +115,15 @@ public class DataSerializer implements ResumeSerializer {
                     }
                     resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
                 }
-                if (sectionType.equals(ListEstablishmentSection.class.getSimpleName())) {
+                if (sectionType.equals(SectionType.EXPERIENCE.name()) || sectionType.equals(SectionType.EDUCATION.name())) {
                     int establishmentListSize = dataInputStream.readInt();
                     List<Establishment> establishmentList = new ArrayList<>(establishmentListSize);
                     for (int j = 0; j < establishmentListSize; j++) {
                         String name = dataInputStream.readUTF();
                         String url = dataInputStream.readUTF();
+                        if (url.equals("null")) {
+                            url = null;
+                        }
                         int positionListSize = dataInputStream.readInt();
                         List<Establishment.Position> positionList = new ArrayList<>(positionListSize);
                         for (int k = 0; k < positionListSize; k++) {
