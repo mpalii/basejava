@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 
 /**
- * Interface marker, class container.
+ * Class marker, class container.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Section implements Serializable {
