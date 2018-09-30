@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 public class DataSerializer implements ResumeSerializer {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final String NO_DATA_MARKER = "null";
+
     @Override
     public void executeWriteFile(OutputStream outputStream, Resume resume) throws IOException {
         try (DataOutputStream dataOutputStream = new DataOutputStream(outputStream)) {
@@ -28,26 +31,21 @@ public class DataSerializer implements ResumeSerializer {
             dataOutputStream.writeUTF(resume.getFullName());
 
             Map<ContactType, String> contacts = resume.getContacts();
-            int contactsSize = contacts.size();
-            dataOutputStream.writeInt(contactsSize);
-            if (contactsSize != 0) {
-                for (Map.Entry<ContactType, String> pair : contacts.entrySet()) {
-                    dataOutputStream.writeUTF(pair.getKey().name());
-                    dataOutputStream.writeUTF(pair.getValue());
-                }
-            }
+            writeContacts(dataOutputStream, contacts);
 
             Map<SectionType, Section> sections = resume.getSections();
             int sectionsSize = sections.size();
             dataOutputStream.writeInt(sectionsSize);
-            if (sectionsSize != 0) {
-                for (Map.Entry<SectionType, Section> pair : sections.entrySet()) {
-                    String sectionType = pair.getKey().name();
-                    dataOutputStream.writeUTF(sectionType);
-                    if (sectionType.equals(SectionType.OBJECTIVE.name()) || sectionType.equals(SectionType.PERSONAL.name())) {
+            for (Map.Entry<SectionType, Section> pair : sections.entrySet()) {
+                String sectionType = pair.getKey().name();
+                dataOutputStream.writeUTF(sectionType);
+                switch (sectionType) {
+                    case "OBJECTIVE":
+                    case "PERSONAL":
                         dataOutputStream.writeUTF(((TextSection) pair.getValue()).getContent());
-                    }
-                    if (sectionType.equals(SectionType.ACHIEVEMENT.name()) || sectionType.equals(SectionType.QUALIFICATIONS.name())) {
+                        break;
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
                         List<String> stringList = ((ListTextSection) pair.getValue()).getListContent();
                         dataOutputStream.writeInt(stringList.size());
                         if (stringList.size() != 0) {
@@ -55,24 +53,22 @@ public class DataSerializer implements ResumeSerializer {
                                 dataOutputStream.writeUTF(entry);
                             }
                         }
-                    }
-                    if (sectionType.equals(SectionType.EXPERIENCE.name()) || sectionType.equals(SectionType.EDUCATION.name())) {
+                        break;
+                    case "EXPERIENCE":
+                    case "EDUCATION":
                         List<Establishment> establishmentList = ((ListEstablishmentSection) pair.getValue()).getEstablishmentContent();
                         dataOutputStream.writeInt(establishmentList.size());
                         if (establishmentList.size() != 0) {
                             for (Establishment element : establishmentList) {
                                 dataOutputStream.writeUTF(element.getEstablishment().getName());
                                 String url = element.getEstablishment().getUrl();
-                                if (url != null) {
-                                    dataOutputStream.writeUTF(url);
-                                } else {
-                                    dataOutputStream.writeUTF("null");
-                                }
+                                dataOutputStream.writeUTF(url != null ? url : NO_DATA_MARKER);
                                 List<Establishment.Position> positionList = element.getPositions();
                                 dataOutputStream.writeInt(positionList.size());
                                 if (positionList.size() != 0) {
                                     for (Establishment.Position position : positionList) {
-                                        dataOutputStream.writeUTF(position.getTitle());
+                                        String title = position.getTitle();
+                                        dataOutputStream.writeUTF(title != null ? title : NO_DATA_MARKER);
                                         dataOutputStream.writeUTF(position.getDescription());
                                         dataOutputStream.writeUTF(position.getStartDate().format(FORMATTER));
                                         dataOutputStream.writeUTF(position.getEndDate().format(FORMATTER));
@@ -80,7 +76,7 @@ public class DataSerializer implements ResumeSerializer {
                                 }
                             }
                         }
-                    }
+                        break;
                 }
             }
         }
@@ -103,45 +99,67 @@ public class DataSerializer implements ResumeSerializer {
             size = dataInputStream.readInt();
             for (int i = 0; i < size; i++) {
                 String sectionType = dataInputStream.readUTF();
-                if (sectionType.equals(SectionType.OBJECTIVE.name()) || sectionType.equals(SectionType.PERSONAL.name())) {
-                    String content = dataInputStream.readUTF();
-                    resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
-                }
-                if (sectionType.equals(SectionType.ACHIEVEMENT.name()) || sectionType.equals(SectionType.QUALIFICATIONS.name())) {
-                    int listSize = dataInputStream.readInt();
-                    List<String> stringList = new ArrayList<>(listSize);
-                    for (int j = 0; j < listSize; j++) {
-                        stringList.add(dataInputStream.readUTF());
-                    }
-                    resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
-                }
-                if (sectionType.equals(SectionType.EXPERIENCE.name()) || sectionType.equals(SectionType.EDUCATION.name())) {
-                    int establishmentListSize = dataInputStream.readInt();
-                    List<Establishment> establishmentList = new ArrayList<>(establishmentListSize);
-                    for (int j = 0; j < establishmentListSize; j++) {
-                        String name = dataInputStream.readUTF();
-                        String url = dataInputStream.readUTF();
-                        if (url.equals("null")) {
-                            url = null;
+                switch (sectionType) {
+                    case "OBJECTIVE":
+                    case "PERSONAL":
+                        String content = dataInputStream.readUTF();
+                        resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
+                        break;
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
+                        int listSize = dataInputStream.readInt();
+                        List<String> stringList = new ArrayList<>(listSize);
+                        for (int j = 0; j < listSize; j++) {
+                            stringList.add(dataInputStream.readUTF());
                         }
-                        int positionListSize = dataInputStream.readInt();
-                        List<Establishment.Position> positionList = new ArrayList<>(positionListSize);
-                        for (int k = 0; k < positionListSize; k++) {
-                            String title = dataInputStream.readUTF();
-                            String description = dataInputStream.readUTF();
-                            LocalDate startDate = LocalDate.parse(dataInputStream.readUTF(), FORMATTER);
-                            LocalDate endDate = LocalDate.parse(dataInputStream.readUTF(), FORMATTER);
-                            positionList.add(new Establishment.Position(title, description, startDate, endDate));
+                        resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
+                        break;
+                    case "EXPERIENCE":
+                    case "EDUCATION":
+                        int establishmentListSize = dataInputStream.readInt();
+                        List<Establishment> establishmentList = new ArrayList<>(establishmentListSize);
+                        for (int j = 0; j < establishmentListSize; j++) {
+                            String name = dataInputStream.readUTF();
+                            String url = dataInputStream.readUTF();
+                            if (url.equals(NO_DATA_MARKER)) {
+                                url = null;
+                            }
+                            int positionListSize = dataInputStream.readInt();
+                            List<Establishment.Position> positionList = new ArrayList<>(positionListSize);
+                            for (int k = 0; k < positionListSize; k++) {
+                                String title = dataInputStream.readUTF();
+                                if (title.equals(NO_DATA_MARKER)) {
+                                    title = null;
+                                }
+                                String description = dataInputStream.readUTF();
+                                LocalDate startDate = LocalDate.parse(dataInputStream.readUTF(), FORMATTER);
+                                LocalDate endDate = LocalDate.parse(dataInputStream.readUTF(), FORMATTER);
+                                positionList.add(new Establishment.Position(title, description, startDate, endDate));
+                            }
+                            establishmentList.add(new Establishment(name, url, positionList));
                         }
-                        establishmentList.add(new Establishment(name, url, positionList));
-                    }
-                    resume.addSection(SectionType.valueOf(sectionType), new ListEstablishmentSection(establishmentList));
+                        resume.addSection(SectionType.valueOf(sectionType), new ListEstablishmentSection(establishmentList));
+                        break;
                 }
             }
-
             return resume;
         }
     }
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private void writeContacts(DataOutputStream dataOutputStream, Map<ContactType, String> contacts) throws IOException {
+        int contactsSize = contacts.size();
+        dataOutputStream.writeInt(contactsSize);
+        try {
+            contacts.forEach((contactType, s) -> {
+                try {
+                    dataOutputStream.writeUTF(contactType.name());
+                    dataOutputStream.writeUTF(s);
+                } catch (IOException e) {
+                    throw new RuntimeException("Write contacts exception");
+                }
+            });
+        } catch (RuntimeException e) {
+            throw new IOException(e);
+        }
+    }
 }
