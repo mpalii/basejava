@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,54 +32,54 @@ public class DataSerializer implements ResumeSerializer {
             dataOutputStream.writeUTF(resume.getFullName());
 
             Map<ContactType, String> contacts = resume.getContacts();
-            writeContacts(dataOutputStream, contacts);
+            writeCollection(dataOutputStream, contacts.entrySet(), (Map.Entry<ContactType, String> entry) -> {
+                dataOutputStream.writeUTF(entry.getKey().name());
+                dataOutputStream.writeUTF(entry.getValue());
+            });
 
             Map<SectionType, Section> sections = resume.getSections();
-            int sectionsSize = sections.size();
-            dataOutputStream.writeInt(sectionsSize);
-            for (Map.Entry<SectionType, Section> pair : sections.entrySet()) {
-                String sectionType = pair.getKey().name();
+            writeCollection(dataOutputStream, sections.entrySet(), (Map.Entry<SectionType, Section> entry) -> {
+                String sectionType = entry.getKey().name();
                 dataOutputStream.writeUTF(sectionType);
                 switch (sectionType) {
                     case "OBJECTIVE":
                     case "PERSONAL":
-                        dataOutputStream.writeUTF(((TextSection) pair.getValue()).getContent());
+                        dataOutputStream.writeUTF(((TextSection) (entry.getValue())).getContent());
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
-                        List<String> stringList = ((ListTextSection) pair.getValue()).getListContent();
-                        dataOutputStream.writeInt(stringList.size());
-                        if (stringList.size() != 0) {
-                            for (String entry : stringList) {
-                                dataOutputStream.writeUTF(entry);
-                            }
-                        }
+                        writeCollection(dataOutputStream, ((ListTextSection) (entry.getValue())).getListContent(), dataOutputStream::writeUTF);
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":
-                        List<Establishment> establishmentList = ((ListEstablishmentSection) pair.getValue()).getEstablishmentContent();
-                        dataOutputStream.writeInt(establishmentList.size());
-                        if (establishmentList.size() != 0) {
-                            for (Establishment element : establishmentList) {
-                                dataOutputStream.writeUTF(element.getEstablishment().getName());
-                                String url = element.getEstablishment().getUrl();
-                                dataOutputStream.writeUTF(url != null ? url : NO_DATA_MARKER);
-                                List<Establishment.Position> positionList = element.getPositions();
-                                dataOutputStream.writeInt(positionList.size());
-                                if (positionList.size() != 0) {
-                                    for (Establishment.Position position : positionList) {
-                                        String title = position.getTitle();
-                                        dataOutputStream.writeUTF(title != null ? title : NO_DATA_MARKER);
-                                        dataOutputStream.writeUTF(position.getDescription());
-                                        dataOutputStream.writeUTF(position.getStartDate().format(FORMATTER));
-                                        dataOutputStream.writeUTF(position.getEndDate().format(FORMATTER));
-                                    }
-                                }
-                            }
-                        }
-                        break;
+                        writeCollection(dataOutputStream, ((ListEstablishmentSection) (entry.getValue())).getEstablishmentContent(), establishment -> {
+                            dataOutputStream.writeUTF(establishment.getEstablishment().getName());
+                            String url = establishment.getEstablishment().getUrl();
+                            dataOutputStream.writeUTF(url != null ? url : NO_DATA_MARKER);
+                            writeCollection(dataOutputStream, establishment.getPositions(), position -> {
+                                String title = position.getTitle();
+                                dataOutputStream.writeUTF(title != null ? title : NO_DATA_MARKER);
+                                dataOutputStream.writeUTF(position.getDescription());
+                                dataOutputStream.writeUTF(position.getStartDate().format(FORMATTER));
+                                dataOutputStream.writeUTF(position.getEndDate().format(FORMATTER));
+                            });
+                        });
                 }
-            }
+            });
+
+        }
+    }
+
+    @FunctionalInterface
+    private interface InformationWriter<T> {
+        void write(T t) throws IOException;
+    }
+
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, InformationWriter<T> writer)
+            throws IOException {
+        dos.writeInt(collection.size());
+        for (T element : collection) {
+            writer.write(element);
         }
     }
 
@@ -143,23 +144,6 @@ public class DataSerializer implements ResumeSerializer {
                 }
             }
             return resume;
-        }
-    }
-
-    private void writeContacts(DataOutputStream dataOutputStream, Map<ContactType, String> contacts) throws IOException {
-        int contactsSize = contacts.size();
-        dataOutputStream.writeInt(contactsSize);
-        try {
-            contacts.forEach((contactType, s) -> {
-                try {
-                    dataOutputStream.writeUTF(contactType.name());
-                    dataOutputStream.writeUTF(s);
-                } catch (IOException e) {
-                    throw new RuntimeException("Write contacts exception");
-                }
-            });
-        } catch (RuntimeException e) {
-            throw new IOException(e);
         }
     }
 }
