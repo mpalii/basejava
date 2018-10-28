@@ -9,6 +9,7 @@ import ru.javaops.webapp.model.Section;
 import ru.javaops.webapp.model.SectionType;
 import ru.javaops.webapp.model.TextSection;
 
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class DataSerializer implements ResumeSerializer {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String NO_DATA_MARKER = "null";
 
+    // FILE WRITING
     @Override
     public void executeWriteFile(OutputStream outputStream, Resume resume) throws IOException {
         try (DataOutputStream dataOutputStream = new DataOutputStream(outputStream)) {
@@ -83,67 +85,98 @@ public class DataSerializer implements ResumeSerializer {
         }
     }
 
+    // FILE READING
     @Override
     public Resume executeReadFile(InputStream inputStream) throws IOException {
         try (DataInputStream dataInputStream = new DataInputStream(inputStream)) {
             String uuid = dataInputStream.readUTF();
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
-
-            int size = dataInputStream.readInt();
-            for (int i = 0; i < size; i++) {
-                String contactType = dataInputStream.readUTF();
-                String contactValue = dataInputStream.readUTF();
-                resume.addContact(ContactType.valueOf(contactType), contactValue);
-            }
-
-            size = dataInputStream.readInt();
-            for (int i = 0; i < size; i++) {
-                String sectionType = dataInputStream.readUTF();
-                switch (sectionType) {
-                    case "OBJECTIVE":
-                    case "PERSONAL":
-                        String content = dataInputStream.readUTF();
-                        resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
-                        break;
-                    case "ACHIEVEMENT":
-                    case "QUALIFICATIONS":
-                        int listSize = dataInputStream.readInt();
-                        List<String> stringList = new ArrayList<>(listSize);
-                        for (int j = 0; j < listSize; j++) {
-                            stringList.add(dataInputStream.readUTF());
-                        }
-                        resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
-                        break;
-                    case "EXPERIENCE":
-                    case "EDUCATION":
-                        int establishmentListSize = dataInputStream.readInt();
-                        List<Establishment> establishmentList = new ArrayList<>(establishmentListSize);
-                        for (int j = 0; j < establishmentListSize; j++) {
-                            String name = dataInputStream.readUTF();
-                            String url = dataInputStream.readUTF();
-                            if (url.equals(NO_DATA_MARKER)) {
-                                url = null;
-                            }
-                            int positionListSize = dataInputStream.readInt();
-                            List<Establishment.Position> positionList = new ArrayList<>(positionListSize);
-                            for (int k = 0; k < positionListSize; k++) {
-                                String title = dataInputStream.readUTF();
-                                if (title.equals(NO_DATA_MARKER)) {
-                                    title = null;
-                                }
-                                String description = dataInputStream.readUTF();
-                                LocalDate startDate = LocalDate.parse(dataInputStream.readUTF(), FORMATTER);
-                                LocalDate endDate = LocalDate.parse(dataInputStream.readUTF(), FORMATTER);
-                                positionList.add(new Establishment.Position(title, description, startDate, endDate));
-                            }
-                            establishmentList.add(new Establishment(name, url, positionList));
-                        }
-                        resume.addSection(SectionType.valueOf(sectionType), new ListEstablishmentSection(establishmentList));
-                        break;
-                }
-            }
+            readContacts(resume, dataInputStream, DataInput::readUTF);
+            readSections(resume, dataInputStream, DataInput::readUTF);
             return resume;
         }
+    }
+
+    @FunctionalInterface
+    private interface InformationReader<T> {
+        T read(DataInputStream dis) throws IOException;
+    }
+
+    private void readContacts(Resume resume, DataInputStream dis, InformationReader<String> reader)
+            throws IOException {
+        int elementsCounter = dis.readInt();
+        for (int i = 0; i < elementsCounter; i++) {
+            String contactType = reader.read(dis);
+            String contactValue = reader.read(dis);
+            resume.addContact(ContactType.valueOf(contactType), contactValue);
+        }
+    }
+
+    private void readSections(Resume resume, DataInputStream dis, InformationReader<String> reader)
+            throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            String sectionType = reader.read(dis);
+            switch (sectionType) {
+                case "OBJECTIVE":
+                case "PERSONAL":
+                    String content = reader.read(dis);
+                    resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
+                    break;
+                case "ACHIEVEMENT":
+                case "QUALIFICATIONS":
+                    List<String> stringList = readStringsList(dis, reader);
+                    resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
+                    break;
+                case "EXPERIENCE":
+                case "EDUCATION":
+                    List<Establishment> establishmentList = readEstablishmentList(dis, reader);
+                    resume.addSection(SectionType.valueOf(sectionType), new ListEstablishmentSection(establishmentList));
+                    break;
+            }
+        }
+    }
+
+    private List<String> readStringsList(DataInputStream dis, InformationReader<String> reader) throws IOException {
+        int listSize = dis.readInt();
+        List<String> stringList = new ArrayList<>(listSize);
+        for (int j = 0; j < listSize; j++) {
+            stringList.add(reader.read(dis));
+        }
+        return stringList;
+    }
+
+    private List<Establishment> readEstablishmentList(DataInputStream dis, InformationReader<String> reader)
+            throws IOException {
+        int establishmentListSize = dis.readInt();
+        List<Establishment> establishmentList = new ArrayList<>(establishmentListSize);
+        for (int i = 0; i < establishmentListSize; i++) {
+            String name = reader.read(dis);
+            String url = reader.read(dis);
+            if (url.equals(NO_DATA_MARKER)) {
+                url = null;
+            }
+            List<Establishment.Position> positionList = readPositionsList(dis, reader);
+            establishmentList.add(new Establishment(name, url, positionList));
+        }
+        return establishmentList;
+    }
+
+    private List<Establishment.Position> readPositionsList(DataInputStream dis, InformationReader<String> reader)
+            throws IOException {
+        int positionListSize = dis.readInt();
+        List<Establishment.Position> positionList = new ArrayList<>(positionListSize);
+        for (int k = 0; k < positionListSize; k++) {
+            String title = reader.read(dis);
+            if (title.equals(NO_DATA_MARKER)) {
+                title = null;
+            }
+            String description = reader.read(dis);
+            LocalDate startDate = LocalDate.parse(reader.read(dis), FORMATTER);
+            LocalDate endDate = LocalDate.parse(reader.read(dis), FORMATTER);
+            positionList.add(new Establishment.Position(title, description, startDate, endDate));
+        }
+        return positionList;
     }
 }
