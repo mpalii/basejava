@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class DataSerializer implements ResumeSerializer {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final String NO_DATA_MARKER = "null";
+    private static final String EMPTY = "";
 
     // FILE WRITING
     @Override
@@ -57,10 +57,10 @@ public class DataSerializer implements ResumeSerializer {
                         writeCollection(dataOutputStream, ((ListEstablishmentSection) (entry.getValue())).getEstablishmentContent(), establishment -> {
                             dataOutputStream.writeUTF(establishment.getEstablishment().getName());
                             String url = establishment.getEstablishment().getUrl();
-                            dataOutputStream.writeUTF(url != null ? url : NO_DATA_MARKER);
+                            dataOutputStream.writeUTF(url != null ? url : EMPTY);
                             writeCollection(dataOutputStream, establishment.getPositions(), position -> {
                                 String title = position.getTitle();
-                                dataOutputStream.writeUTF(title != null ? title : NO_DATA_MARKER);
+                                dataOutputStream.writeUTF(title != null ? title : EMPTY);
                                 dataOutputStream.writeUTF(position.getDescription());
                                 dataOutputStream.writeUTF(position.getStartDate().format(FORMATTER));
                                 dataOutputStream.writeUTF(position.getEndDate().format(FORMATTER));
@@ -92,91 +92,83 @@ public class DataSerializer implements ResumeSerializer {
             String uuid = dataInputStream.readUTF();
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            readContacts(resume, dataInputStream, DataInput::readUTF);
-            readSections(resume, dataInputStream, DataInput::readUTF);
+
+            readContacts(resume, dataInputStream, DataInputStream::readInt, DataInput::readUTF);
+            readSections(resume, dataInputStream, DataInputStream::readInt, DataInput::readUTF, dataInputStream1 -> {
+                String name = dataInputStream1.readUTF();
+                String url = dataInputStream1.readUTF();
+                if (url.equals(EMPTY)) {
+                    url = null;
+                }
+                List<Establishment.Position> positionList = readList(dataInputStream1, dataInputStream11 -> {
+                    String title = dataInputStream11.readUTF();
+                    if (title.equals(EMPTY)) {
+                        title = null;
+                    }
+                    String description = dataInputStream11.readUTF();
+                    LocalDate startDate = LocalDate.parse(dataInputStream11.readUTF(), FORMATTER);
+                    LocalDate endDate = LocalDate.parse(dataInputStream11.readUTF(), FORMATTER);
+                    return new Establishment.Position(title, description, startDate, endDate);
+                }, DataInputStream::readInt);
+                return new Establishment(name, url, positionList);
+            });
+
             return resume;
         }
     }
 
     @FunctionalInterface
     private interface InformationReader<T> {
-        T read(DataInputStream dis) throws IOException;
+        T read(DataInputStream dataInputStream) throws IOException;
     }
 
-    private void readContacts(Resume resume, DataInputStream dis, InformationReader<String> reader)
-            throws IOException {
-        int elementsCounter = dis.readInt();
-        for (int i = 0; i < elementsCounter; i++) {
-            String contactType = reader.read(dis);
-            String contactValue = reader.read(dis);
+    private <T> T readInformation(DataInputStream dis, InformationReader<T> reader) throws IOException {
+        return reader.read(dis);
+    }
+
+    private <T> List<T> readList(DataInputStream dataInputStream, InformationReader<T> tReader,
+                                 InformationReader<Integer> integerInformationReader) throws IOException {
+        int size = integerInformationReader.read(dataInputStream);
+        List<T> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            list.add(tReader.read(dataInputStream));
+        }
+        return list;
+    }
+
+    private void readContacts(Resume resume, DataInputStream dis, InformationReader<Integer> integerInformationReader,
+                              InformationReader<String> stringInformationReader) throws IOException {
+        int size = integerInformationReader.read(dis);
+        for (int i = 0; i < size; i++) {
+            String contactType = readInformation(dis, stringInformationReader);
+            String contactValue = readInformation(dis, stringInformationReader);
             resume.addContact(ContactType.valueOf(contactType), contactValue);
         }
     }
 
-    private void readSections(Resume resume, DataInputStream dis, InformationReader<String> reader)
+    private void readSections(Resume resume, DataInputStream dis, InformationReader<Integer> intReader,
+                              InformationReader<String> strReader, InformationReader<Establishment> estReader)
             throws IOException {
-        int size = dis.readInt();
+        int size = intReader.read(dis);
         for (int i = 0; i < size; i++) {
-            String sectionType = reader.read(dis);
+            String sectionType = strReader.read(dis);
             switch (sectionType) {
                 case "OBJECTIVE":
                 case "PERSONAL":
-                    String content = reader.read(dis);
+                    String content = strReader.read(dis);
                     resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
                     break;
                 case "ACHIEVEMENT":
                 case "QUALIFICATIONS":
-                    List<String> stringList = readStringsList(dis, reader);
+                    List<String> stringList = readList(dis, strReader, intReader);
                     resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
                     break;
                 case "EXPERIENCE":
                 case "EDUCATION":
-                    List<Establishment> establishmentList = readEstablishmentList(dis, reader);
+                    List<Establishment> establishmentList = readList(dis, estReader, intReader);
                     resume.addSection(SectionType.valueOf(sectionType), new ListEstablishmentSection(establishmentList));
                     break;
             }
         }
-    }
-
-    private List<String> readStringsList(DataInputStream dis, InformationReader<String> reader) throws IOException {
-        int listSize = dis.readInt();
-        List<String> stringList = new ArrayList<>(listSize);
-        for (int j = 0; j < listSize; j++) {
-            stringList.add(reader.read(dis));
-        }
-        return stringList;
-    }
-
-    private List<Establishment> readEstablishmentList(DataInputStream dis, InformationReader<String> reader)
-            throws IOException {
-        int establishmentListSize = dis.readInt();
-        List<Establishment> establishmentList = new ArrayList<>(establishmentListSize);
-        for (int i = 0; i < establishmentListSize; i++) {
-            String name = reader.read(dis);
-            String url = reader.read(dis);
-            if (url.equals(NO_DATA_MARKER)) {
-                url = null;
-            }
-            List<Establishment.Position> positionList = readPositionsList(dis, reader);
-            establishmentList.add(new Establishment(name, url, positionList));
-        }
-        return establishmentList;
-    }
-
-    private List<Establishment.Position> readPositionsList(DataInputStream dis, InformationReader<String> reader)
-            throws IOException {
-        int positionListSize = dis.readInt();
-        List<Establishment.Position> positionList = new ArrayList<>(positionListSize);
-        for (int k = 0; k < positionListSize; k++) {
-            String title = reader.read(dis);
-            if (title.equals(NO_DATA_MARKER)) {
-                title = null;
-            }
-            String description = reader.read(dis);
-            LocalDate startDate = LocalDate.parse(reader.read(dis), FORMATTER);
-            LocalDate endDate = LocalDate.parse(reader.read(dis), FORMATTER);
-            positionList.add(new Establishment.Position(title, description, startDate, endDate));
-        }
-        return positionList;
     }
 }
