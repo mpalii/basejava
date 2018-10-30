@@ -93,26 +93,42 @@ public class DataSerializer implements ResumeSerializer {
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
 
-            readContacts(resume, dataInputStream, DataInputStream::readInt, DataInput::readUTF);
-            readSections(resume, dataInputStream, DataInputStream::readInt, DataInput::readUTF, dataInputStream1 -> {
-                String name = dataInputStream1.readUTF();
-                String url = dataInputStream1.readUTF();
-                if (url.equals(EMPTY)) {
-                    url = null;
-                }
-                List<Establishment.Position> positionList = readList(dataInputStream1, dataInputStream11 -> {
-                    String title = dataInputStream11.readUTF();
-                    if (title.equals(EMPTY)) {
-                        title = null;
-                    }
-                    String description = dataInputStream11.readUTF();
-                    LocalDate startDate = LocalDate.parse(dataInputStream11.readUTF(), FORMATTER);
-                    LocalDate endDate = LocalDate.parse(dataInputStream11.readUTF(), FORMATTER);
-                    return new Establishment.Position(title, description, startDate, endDate);
-                }, DataInputStream::readInt);
-                return new Establishment(name, url, positionList);
+            readInfo(dataInputStream, () -> {
+                String contactType = dataInputStream.readUTF();
+                String contactValue = dataInputStream.readUTF();
+                resume.addContact(ContactType.valueOf(contactType), contactValue);
             });
 
+            readInfo(dataInputStream, () -> {
+                String sectionType = dataInputStream.readUTF();
+                switch (sectionType) {
+                    case "OBJECTIVE":
+                    case "PERSONAL":
+                        String content = dataInputStream.readUTF();
+                        resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
+                        break;
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
+                        List<String> stringList = readList(dataInputStream, DataInput::readUTF);
+                        resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
+                        break;
+                    case "EXPERIENCE":
+                    case "EDUCATION":
+                        List<Establishment> establishmentList = readList(dataInputStream, dis ->
+                                new Establishment(dis.readUTF(), dis.readUTF(),
+                                        readList(dis, dataInputStream1 ->
+                                                new Establishment.Position(dataInputStream1.readUTF(),
+                                                        dataInputStream1.readUTF(),
+                                                        LocalDate.parse(dataInputStream1.readUTF(), FORMATTER),
+                                                        LocalDate.parse(dataInputStream1.readUTF(), FORMATTER)
+                                                )
+                                        )
+                                )
+                        );
+                        resume.addSection(SectionType.valueOf(sectionType), new ListEstablishmentSection(establishmentList));
+                        break;
+                }
+            });
             return resume;
         }
     }
@@ -122,53 +138,24 @@ public class DataSerializer implements ResumeSerializer {
         T read(DataInputStream dataInputStream) throws IOException;
     }
 
-    private <T> T readInformation(DataInputStream dis, InformationReader<T> reader) throws IOException {
-        return reader.read(dis);
+    @FunctionalInterface
+    private interface Executor {
+        void execute() throws IOException;
     }
 
-    private <T> List<T> readList(DataInputStream dataInputStream, InformationReader<T> tReader,
-                                 InformationReader<Integer> integerInformationReader) throws IOException {
-        int size = integerInformationReader.read(dataInputStream);
+    private <T> List<T> readList(DataInputStream dataInputStream, InformationReader<T> reader) throws IOException {
+        int size = dataInputStream.readInt();
         List<T> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            list.add(tReader.read(dataInputStream));
+            list.add(reader.read(dataInputStream));
         }
         return list;
     }
 
-    private void readContacts(Resume resume, DataInputStream dis, InformationReader<Integer> integerInformationReader,
-                              InformationReader<String> stringInformationReader) throws IOException {
-        int size = integerInformationReader.read(dis);
+    private void readInfo(DataInputStream dis, Executor executor) throws IOException {
+        int size = dis.readInt();
         for (int i = 0; i < size; i++) {
-            String contactType = readInformation(dis, stringInformationReader);
-            String contactValue = readInformation(dis, stringInformationReader);
-            resume.addContact(ContactType.valueOf(contactType), contactValue);
-        }
-    }
-
-    private void readSections(Resume resume, DataInputStream dis, InformationReader<Integer> intReader,
-                              InformationReader<String> strReader, InformationReader<Establishment> estReader)
-            throws IOException {
-        int size = intReader.read(dis);
-        for (int i = 0; i < size; i++) {
-            String sectionType = strReader.read(dis);
-            switch (sectionType) {
-                case "OBJECTIVE":
-                case "PERSONAL":
-                    String content = strReader.read(dis);
-                    resume.addSection(SectionType.valueOf(sectionType), new TextSection(content));
-                    break;
-                case "ACHIEVEMENT":
-                case "QUALIFICATIONS":
-                    List<String> stringList = readList(dis, strReader, intReader);
-                    resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(stringList));
-                    break;
-                case "EXPERIENCE":
-                case "EDUCATION":
-                    List<Establishment> establishmentList = readList(dis, estReader, intReader);
-                    resume.addSection(SectionType.valueOf(sectionType), new ListEstablishmentSection(establishmentList));
-                    break;
-            }
+            executor.execute();
         }
     }
 }
