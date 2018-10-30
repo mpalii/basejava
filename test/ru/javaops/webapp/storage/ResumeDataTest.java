@@ -23,7 +23,7 @@ final class ResumeDataTest {
         RESUME_1.addContact(ContactType.TELEPHONE, "555-55-55");
         RESUME_1.addSection(SectionType.EXPERIENCE,
                 new ListEstablishmentSection(
-                        new Establishment("FITTERRA", null,
+                        new Establishment("FITTERRA", "",
                                 new Position(
                                         "Trainer",
                                         "Work in fitness club",
@@ -55,7 +55,7 @@ final class ResumeDataTest {
         RESUME_3.addContact(ContactType.TELEPHONE, "654-00-48");
         RESUME_3.addSection(SectionType.EXPERIENCE,
                 new ListEstablishmentSection(
-                        new Establishment("DONBUDMONTAG", null,
+                        new Establishment("DONBUDMONTAG", "",
                                 new Position(
                                         "Cost estimator",
                                         "Cost planning",
