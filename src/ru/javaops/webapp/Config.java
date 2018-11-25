@@ -1,5 +1,7 @@
 package ru.javaops.webapp;
 
+import ru.javaops.webapp.exception.StorageException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +14,9 @@ public class Config {
 
     private Properties props = new Properties();
     private File storageDir;
+    private String dbUrl;
+    private String dbUser;
+    private String dbPassword;
 
     public static Config get() {
         return INSTANCE;
@@ -21,12 +26,30 @@ public class Config {
         try (InputStream is = new FileInputStream(PROPS)) {
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
+            dbUrl = props.getProperty("db.url");
+            dbUser = props.getProperty("db.user");
+            dbPassword = props.getProperty("db.password");
+            Class.forName("org.postgresql.Driver");
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file "  + PROPS.getAbsolutePath());
+        } catch (ClassNotFoundException e) {
+            throw new StorageException("JDBC driver not found");
         }
     }
 
     public File getStorageDir() {
         return storageDir;
+    }
+
+    public String getDbUrl() {
+        return dbUrl;
+    }
+
+    public String getDbUser() {
+        return dbUser;
+    }
+
+    public String getDbPassword() {
+        return dbPassword;
     }
 }
