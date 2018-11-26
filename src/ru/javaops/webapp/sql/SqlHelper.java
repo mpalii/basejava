@@ -15,15 +15,6 @@ public class SqlHelper {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
-    public void executePreparedStatement(String sql, StatementExecutor statementExecutor) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            statementExecutor.execute(preparedStatement);
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-    }
-
     public <T> T executePreparedStatement(String sql, StatementFunction<T> statementFunction) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -31,10 +22,6 @@ public class SqlHelper {
         } catch (SQLException e) {
             throw new StorageException(e);
         }
-    }
-
-    public interface StatementExecutor {
-        void execute(PreparedStatement preparedStatement) throws SQLException;
     }
 
     public interface StatementFunction<T> {
