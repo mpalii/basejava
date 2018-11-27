@@ -1,8 +1,6 @@
 package ru.javaops.webapp.storage;
 
-import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.NotExistStorageException;
-import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.sql.SqlHelper;
 
@@ -40,16 +38,12 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        try {
-            sqlHelper.executePreparedStatement("INSERT INTO resume (uuid, full_name) VALUES (?, ?)", preparedStatement -> {
-                preparedStatement.setString(1, resume.getUuid());
-                preparedStatement.setString(2, resume.getFullName());
-                preparedStatement.executeUpdate();
-                return null;
-            });
-        } catch (StorageException e) {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        sqlHelper.executePreparedStatement("INSERT INTO resume (uuid, full_name) VALUES (?, ?)", preparedStatement -> {
+            preparedStatement.setString(1, resume.getUuid());
+            preparedStatement.setString(2, resume.getFullName());
+            preparedStatement.executeUpdate();
+            return null;
+        });
     }
 
     @Override

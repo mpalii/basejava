@@ -1,5 +1,6 @@
 package ru.javaops.webapp.sql;
 
+import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.StorageException;
 
 import java.sql.Connection;
@@ -20,6 +21,9 @@ public class SqlHelper {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             return statementFunction.execute(preparedStatement);
         } catch (SQLException e) {
+            if (e.getSQLState().equals("23505")) {
+                throw new ExistStorageException(e.getMessage());
+            }
             throw new StorageException(e);
         }
     }
