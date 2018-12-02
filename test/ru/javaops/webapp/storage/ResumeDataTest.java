@@ -1,5 +1,6 @@
 package ru.javaops.webapp.storage;
 
+import ru.javaops.webapp.model.ContactType;
 import ru.javaops.webapp.model.Resume;
 
 final class ResumeDataTest {
@@ -11,7 +12,8 @@ final class ResumeDataTest {
     static {
         // RESUME_1 initialization
         RESUME_1 = new Resume("UUID_1", "Vasyl Gym");
-//        RESUME_1.addContact(ContactType.TELEPHONE, "555-55-55");
+        RESUME_1.addContact(ContactType.TELEPHONE, "555-55-55");
+        RESUME_1.addContact(ContactType.EMAIL, "email@mail.com");
 //        RESUME_1.addSection(SectionType.EXPERIENCE,
 //                new ListEstablishmentSection(
 //                        new Establishment("FITTERRA", "",
@@ -27,7 +29,8 @@ final class ResumeDataTest {
 
         // RESUME_2 initialization
         RESUME_2 = new Resume("UUID_2", "Serhii Soloviev");
-//        RESUME_2.addContact(ContactType.TELEPHONE, "999-98-78");
+        RESUME_2.addContact(ContactType.TELEPHONE, "999-98-78");
+        RESUME_2.addContact(ContactType.HOMEPAGE, "homepage.com");
 //        RESUME_2.addSection(SectionType.EXPERIENCE,
 //                new ListEstablishmentSection(
 //                        new Establishment("InterPIPE", "http://interpipe.biz/",
@@ -43,7 +46,7 @@ final class ResumeDataTest {
 
         // RESUME_3 initialization
         RESUME_3 = new Resume("UUID_3", "Maksym Palii");
-//        RESUME_3.addContact(ContactType.TELEPHONE, "654-00-48");
+        RESUME_3.addContact(ContactType.TELEPHONE, "654-00-48");
 //        RESUME_3.addSection(SectionType.EXPERIENCE,
 //                new ListEstablishmentSection(
 //                        new Establishment("DONBUDMONTAG", "",
@@ -59,7 +62,7 @@ final class ResumeDataTest {
 
         // RESUME_4 initialization
         RESUME_4 = new Resume("UUID_4", "Pryntseva Olha");
-//        RESUME_4.addContact(ContactType.TELEPHONE, "784-10-08");
+        RESUME_4.addContact(ContactType.TELEPHONE, "784-10-08");
 //        RESUME_4.addSection(SectionType.EXPERIENCE,
 //                new ListEstablishmentSection(
 //                        new Establishment("NOVA POSHTA", "novaposhta.ua",
