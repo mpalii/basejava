@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public class SqlStorage implements Storage {
             try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
                 preparedStatement.setString(1, resume.getFullName());
                 preparedStatement.setString(2, resume.getUuid());
-                if(preparedStatement.executeUpdate() == 0) {
+                if (preparedStatement.executeUpdate() == 0) {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
@@ -104,7 +104,7 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         return sqlHelper.transactionalExecute(connection -> {
-            Map<String, Resume> resumeMap = new HashMap<>();
+            Map<String, Resume> resumeMap = new LinkedHashMap<>();
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid ASC")) {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
