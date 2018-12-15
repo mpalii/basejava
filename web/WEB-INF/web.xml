@@ -14,7 +14,7 @@
 
     <servlet-mapping>
         <servlet-name>resumeObserverServlet</servlet-name>
-        <url-pattern>/getResume</url-pattern>
+        <url-pattern>/getResumes</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>resumeServlet</servlet-name>

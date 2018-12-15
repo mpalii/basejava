@@ -23,6 +23,11 @@ public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }
 
@@ -211,19 +216,17 @@ public class SqlStorage implements Storage {
                     case "OBJECTIVE":
                     case "PERSONAL":
                         preparedStatement.setString(3, ((TextSection) (entry.getValue())).getContent());
-                        preparedStatement.execute();
+                        preparedStatement.addBatch();
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
-                        StringBuilder content = new StringBuilder();
-                        for (String data : ((ListTextSection) (entry.getValue())).getListContent()) {
-                            content.append(data).append("\n");
-                        }
-                        preparedStatement.setString(3, content.toString());
-                        preparedStatement.execute();
+                        String data = String.join("\n", ((ListTextSection) (entry.getValue())).getListContent());
+                        preparedStatement.setString(3, data);
+                        preparedStatement.addBatch();
                         break;
                 }
             }
+            preparedStatement.executeBatch();
         }
     }
 }
