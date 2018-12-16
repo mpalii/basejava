@@ -1,10 +1,15 @@
 package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.model.ContactType;
+import ru.javaops.webapp.model.Establishment;
+import ru.javaops.webapp.model.ListEstablishmentSection;
 import ru.javaops.webapp.model.ListTextSection;
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.model.SectionType;
 import ru.javaops.webapp.model.TextSection;
+import ru.javaops.webapp.util.DateUtil;
+
+import java.time.Month;
 
 final class ResumeDataTest {
     private static final Resume RESUME_1;
@@ -32,18 +37,18 @@ final class ResumeDataTest {
                 "«Спортивная диетология» г. Москва",
                 "«Говорим свободно на английском» г. Москва"
         ));
-//        RESUME_1.addSection(SectionType.EXPERIENCE,
-//                new ListEstablishmentSection(
-//                        new Establishment("FITTERRA", "",
-//                                new Position(
-//                                        "Trainer",
-//                                        "Work in fitness club",
-//                                        DateUtil.of(2015, Month.OCTOBER),
-//                                        DateUtil.NOW
-//                                )
-//                        )
-//                )
-//        );
+        RESUME_1.addSection(SectionType.EXPERIENCE,
+                new ListEstablishmentSection(
+                        new Establishment("FITTERRA", "",
+                                new Establishment.Position(
+                                        "Trainer",
+                                        "Work in fitness club",
+                                        DateUtil.of(2015, Month.OCTOBER),
+                                        DateUtil.NOW
+                                )
+                        )
+                )
+        );
 
         // RESUME_2 initialization
         RESUME_2 = new Resume("UUID_2", "Serhii Nesterov");
@@ -64,18 +69,18 @@ final class ResumeDataTest {
                 "Scad SYSTEMS",
                 "EPLAN"
         ));
-//        RESUME_2.addSection(SectionType.EXPERIENCE,
-//                new ListEstablishmentSection(
-//                        new Establishment("InterPIPE", "http://interpipe.biz/",
-//                                new Position(
-//                                        "Engineer",
-//                                        "Repair of mechanic equipment",
-//                                        DateUtil.of(2011, Month.NOVEMBER),
-//                                        DateUtil.NOW
-//                                )
-//                        )
-//                )
-//        );
+        RESUME_2.addSection(SectionType.EXPERIENCE,
+                new ListEstablishmentSection(
+                        new Establishment("InterPIPE", "http://interpipe.biz/",
+                                new Establishment.Position(
+                                        "Engineer",
+                                        "Repair of mechanic equipment",
+                                        DateUtil.of(2011, Month.NOVEMBER),
+                                        DateUtil.NOW
+                                )
+                        )
+                )
+        );
 
         // RESUME_3 initialization
         RESUME_3 = new Resume("UUID_3", "Maksym Palii");
@@ -93,18 +98,18 @@ final class ResumeDataTest {
                 "Тендер-контракт интеллектуальные системы",
                 "ГрандСмета РФ"
         ));
-//        RESUME_3.addSection(SectionType.EXPERIENCE,
-//                new ListEstablishmentSection(
-//                        new Establishment("DONBUDMONTAG", "",
-//                                new Position(
-//                                        "Cost estimator",
-//                                        "Cost planning",
-//                                        DateUtil.of(2012, Month.DECEMBER),
-//                                        DateUtil.NOW
-//                                )
-//                        )
-//                )
-//        );
+        RESUME_3.addSection(SectionType.EXPERIENCE,
+                new ListEstablishmentSection(
+                        new Establishment("DONBUDMONTAG", "",
+                                new Establishment.Position(
+                                        "Cost estimator",
+                                        "Cost planning",
+                                        DateUtil.of(2012, Month.DECEMBER),
+                                        DateUtil.NOW
+                                )
+                        )
+                )
+        );
 
         // RESUME_4 initialization
         RESUME_4 = new Resume("UUID_4", "Pryntseva Olha");
@@ -120,18 +125,18 @@ final class ResumeDataTest {
                 "МАСТЕР ПОД КЛЮЧ - г. Киев",
                 "Стильные дизайны - г. Днепр"
         ));
-//        RESUME_4.addSection(SectionType.EXPERIENCE,
-//                new ListEstablishmentSection(
-//                        new Establishment("NOVA POSHTA", "novaposhta.ua",
-//                                new Position(
-//                                        "Operator",
-//                                        "Solving of customer problems",
-//                                        DateUtil.of(2014, Month.MARCH),
-//                                        DateUtil.NOW
-//                                )
-//                        )
-//                )
-//        );
+        RESUME_4.addSection(SectionType.EXPERIENCE,
+                new ListEstablishmentSection(
+                        new Establishment("NOVA POSHTA", "novaposhta.ua",
+                                new Establishment.Position(
+                                        "Operator",
+                                        "Solving of customer problems",
+                                        DateUtil.of(2014, Month.MARCH),
+                                        DateUtil.NOW
+                                )
+                        )
+                )
+        );
     }
 
     static Resume getResume1() {
