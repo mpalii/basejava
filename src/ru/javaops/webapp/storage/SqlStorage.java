@@ -30,7 +30,7 @@ public class SqlStorage implements Storage {
         try {
             Class.forName(DRIVER_NAME);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
         sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }

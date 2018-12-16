@@ -1,9 +1,11 @@
 package ru.javaops.webapp.web;
 
+import ru.javaops.webapp.Config;
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.storage.SqlStorage;
 import ru.javaops.webapp.storage.Storage;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,11 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 public class ResumeObserverServlet extends HttpServlet {
-    private Storage storage = new SqlStorage(
-            "jdbc:postgresql://localhost:5432/resumes",
-            "postgres",
-            "root"
-    );
+    private Storage storage;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage = Config.get().getStorage();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
