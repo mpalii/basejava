@@ -18,7 +18,9 @@ public class ResumeServlet extends HttpServlet {
 //        response.setContentType("text/html; charset=UTF-8");
         response.setHeader("Content-Type", "text/html; charset=UTF-8");
         String name = request.getParameter("name");
+        String uuid = request.getParameter("uuid");
         PrintWriter writer = response.getWriter();
-        writer.print(name == null ? "Hello Resumes!" : "Hello " + name + "!");
+        writer.print(name == null ? "Hello Resumes!" : "Hello " + name + "! ");
+        writer.print("UUID from request is: " + uuid);
     }
 }
