@@ -22,7 +22,7 @@ public class ResumeObserverServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("parameter_resumes", storage.getAllSorted());
+        request.setAttribute("resumes", storage.getAllSorted());
         request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
     }
 
