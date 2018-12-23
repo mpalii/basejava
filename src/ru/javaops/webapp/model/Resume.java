@@ -106,4 +106,8 @@ public class Resume implements Comparable<Resume>, Serializable {
 
         return stringBuilder.toString();
     }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 }

@@ -14,12 +14,16 @@
         <tr>
             <th>Имя</th>
             <th>Email</th>
+            <th>Delete operation</th>
+            <th>Edit operation</th>
         </tr>
         <c:forEach items="${resumes}" var="resume">
             <jsp:useBean id="resume" type="ru.javaops.webapp.model.Resume"/>
             <tr>
-                <td><a href="resume?uuid=${resume.uuid}">${resume.fullName}</a></td>
-                <td>${resume.getContact(ContactType.EMAIL)}</td>
+                <td><a href="getResumes?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
+                <td><%=ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL))%></td>
+                <td><a href="getResumes?uuid=${resume.uuid}&action=delete">delete</a></td>
+                <td><a href="getResumes?uuid=${resume.uuid}&action=edit">edit</a></td>
             </tr>
         </c:forEach>
     </table>
