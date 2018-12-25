@@ -33,6 +33,15 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.fullName = fullName.trim();
     }
 
+    public static Resume getEmptyResume() {
+        Resume resume = new Resume("New Resume");
+        resume.addSection(SectionType.PERSONAL, new TextSection(""));
+        resume.addSection(SectionType.OBJECTIVE, new TextSection(""));
+        resume.addSection(SectionType.ACHIEVEMENT, new ListTextSection(""));
+        resume.addSection(SectionType.QUALIFICATIONS, new ListTextSection(""));
+        return resume;
+    }
+
     public String getUuid() {
         return uuid;
     }

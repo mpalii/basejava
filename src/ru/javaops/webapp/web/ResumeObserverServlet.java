@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ResumeObserverServlet extends HttpServlet {
     private Storage storage;
@@ -42,16 +42,22 @@ public class ResumeObserverServlet extends HttpServlet {
             }
         }
 
-        String objective = request.getParameter("objective");
-        resume.addSection(SectionType.OBJECTIVE, new TextSection(objective));
-        String personal = request.getParameter("personal");
-        resume.addSection(SectionType.PERSONAL, new TextSection(personal));
-
-        String[] rawAchievements = request.getParameterValues("achievementSection");
-        resume.addSection(SectionType.ACHIEVEMENT, getCheckedForEmptyPositionsListTextSection(rawAchievements));
-
-        String[] rawQualifications = request.getParameterValues("qualificationSection");
-        resume.addSection(SectionType.QUALIFICATIONS, getCheckedForEmptyPositionsListTextSection(rawQualifications));
+        for (SectionType sectionType : SectionType.values()) {
+            String value = request.getParameter(sectionType.name());
+            if (value != null && value.trim().length() != 0) {
+                switch (sectionType.name()) {
+                    case "OBJECTIVE":
+                    case "PERSONAL":
+                        resume.addSection(sectionType, new TextSection(value));
+                        break;
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
+                        resume.addSection(sectionType,
+                                new ListTextSection(Arrays.stream(value.split(",")).map(String::trim).collect(Collectors.toList())));
+                        break;
+                }
+            }
+        }
 
         storage.update(resume);
         response.sendRedirect("getResumes");
@@ -80,6 +86,11 @@ public class ResumeObserverServlet extends HttpServlet {
             case "edit":
                 resume = storage.get(uuid);
                 break;
+            case "add":
+                resume = Resume.getEmptyResume();
+                storage.save(resume);
+                action = "edit";
+                break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
         }
@@ -90,13 +101,4 @@ public class ResumeObserverServlet extends HttpServlet {
 
     }
 
-    private ListTextSection getCheckedForEmptyPositionsListTextSection(String[] rawData) {
-        List<String> checkedData = new ArrayList<>();
-        for (String entry : rawData) {
-            if (entry != null && !entry.isEmpty()) {
-                checkedData.add(entry);
-            }
-        }
-        return new ListTextSection(checkedData);
-    }
 }

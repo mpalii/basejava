@@ -1,3 +1,4 @@
+<%@ page import="java.lang.String" %>
 <%@ page import="ru.javaops.webapp.model.ContactType" %>
 <%@ page import="ru.javaops.webapp.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -30,36 +31,41 @@
         </dl>
         </p>
 
+
         <h3>Секции:</h3>
-        <p>
         <dl>
-            <dt>${SectionType.OBJECTIVE.title}</dt>
-            <dd><input type="text" name="objective" size="150" value="${resume.getSection(SectionType.OBJECTIVE)}"></dd>
-            <br>
-            <dt>${SectionType.PERSONAL.title}</dt>
-            <dd><input type="text" name="personal" size="150" value="${resume.getSection(SectionType.PERSONAL)}"></dd>
-            <br>
+
+            <c:forEach var="sectionEntry" items="${resume.sections}">
+                <jsp:useBean id="sectionEntry"
+                             type="java.util.Map.Entry<ru.javaops.webapp.model.SectionType, ru.javaops.webapp.model.Section>"/>
+                <c:set var="sectionName" value="${sectionEntry.key.name()}"/>
+
+                <c:choose>
+
+                    <c:when test="${sectionName=='OBJECTIVE' || sectionName=='PERSONAL'}">
+                        <dt>${SectionType.valueOf(sectionName).getTitle()}</dt>
+                        <dd><input type="text" name="${sectionName}" size="80"
+                                   value="${resume.getSection(SectionType.valueOf(sectionName))}"></dd>
+                        <br>
+                    </c:when>
+
+                    <c:when test="${sectionName=='ACHIEVEMENT' || sectionName=='QUALIFICATIONS'}">
+                        <c:set var="listTextSection" value="${resume.getSection(SectionType.valueOf(sectionName))}"/>
+                        <jsp:useBean id="listTextSection"
+                                     type="ru.javaops.webapp.model.ListTextSection"/>
+                        <c:set var="content" value="${String.join(', ', listTextSection.listContent)}"/>
+                        <dt>${SectionType.valueOf(sectionName).getTitle()}</dt>
+                        <dd><textarea name="${sectionName}" cols="80" rows="5">${content}</textarea></dd>
+                        <br>
+                    </c:when>
+
+                    <%--ESTABLISHMENT SECTION--%>
+
+                </c:choose>
+
+            </c:forEach>
+
         </dl>
-
-        <h5>Достижения</h5>
-        <c:set var="achievement" value="${resume.getSection(SectionType.ACHIEVEMENT)}"/>
-        <jsp:useBean id="achievement"
-                     type="ru.javaops.webapp.model.ListTextSection"/>
-        <c:forEach var="achievementText" items="${achievement.listContent}">
-            <input type="text" name="achievementSection" size="150" value="${achievementText}"><br>
-        </c:forEach>
-        <input type="text" name="achievementSection" size="150" placeholder="Type to add new achievement"><br>
-
-        <h5>Квалификация</h5>
-        <c:set var="qualification" value="${resume.getSection(SectionType.QUALIFICATIONS)}"/>
-        <jsp:useBean id="qualification"
-                     type="ru.javaops.webapp.model.ListTextSection"/>
-        <c:forEach var="qualificationText" items="${qualification.listContent}">
-            <input type="text" name="qualificationSection" size="150" value="${qualificationText}"><br>
-        </c:forEach>
-        <input type="text" name="qualificationSection" size="150" placeholder="Type to add new qualification"><br>
-
-        </p>
 
         <hr>
         <button type="submit">Сохранить</button>

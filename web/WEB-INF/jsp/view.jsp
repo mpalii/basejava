@@ -26,30 +26,38 @@
 
     <p>
     <dl>
-        <c:forEach var="section" items="${resume.sections}">
-            <jsp:useBean id="section"
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<ru.javaops.webapp.model.SectionType, ru.javaops.webapp.model.Section>"/>
-            <c:set var="currentSection" value="${section.key.name()}"/>
+            <c:set var="sectionName" value="${sectionEntry.key.name()}"/>
 
-            <c:if test="${(SectionType.OBJECTIVE.name().equals(currentSection)) || (SectionType.PERSONAL.name().equals(currentSection))}">
-                <dt><h4>${section.key.title}</h4></dt>
-                <dd><%=((TextSection) section.getValue()).getContent()%>
-                </dd>
-            </c:if>
+            <c:choose>
 
-            <c:if test="${(SectionType.ACHIEVEMENT.name().equals(currentSection)) || (SectionType.QUALIFICATIONS.name().equals(currentSection))}">
-                <dt><h4>${section.key.title}</h4></dt>
-                <c:set var="listTextSection" value="${section.value}"/>
-                <jsp:useBean id="listTextSection"
-                             type="ru.javaops.webapp.model.ListTextSection"/>
-                <dd>
-                    <ul>
-                        <c:forEach var="textElement" items="${listTextSection.listContent}">
-                            <li>${textElement}</li>
-                        </c:forEach>
-                    </ul>
-                </dd>
-            </c:if>
+                <c:when test="${sectionName=='OBJECTIVE' || sectionName=='PERSONAL'}">
+                    <dt><h4>${SectionType.valueOf(sectionName).getTitle()}</h4></dt>
+                    <dd><%=((TextSection) sectionEntry.getValue()).getContent()%></dd>
+                </c:when>
+
+
+                <%--<c:when test="${sectionName=='ACHIEVEMENT' || sectionName='QUALIFICATIONS'}">--%>
+                    <%--<dt><h4>${SectionType.valueOf(sectionName).getTitle()}</h4></dt>--%>
+                    <%--<c:set var="listTextSection" value="${sectionEntry.value}"/>--%>
+                    <%--<jsp:useBean id="listTextSection"--%>
+                                 <%--type="ru.javaops.webapp.model.ListTextSection"/>--%>
+                    <%--<dd>--%>
+                        <%--<ul>--%>
+                            <%--<c:forEach var="textElement" items="${listTextSection.listContent}">--%>
+                                <%--<li>${textElement}</li>--%>
+                            <%--</c:forEach>--%>
+                        <%--</ul>--%>
+                    <%--</dd>--%>
+                <%--</c:when>--%>
+
+
+            </c:choose>
+
+
+            <%--ESTABLISHMENT SECTION--%>
 
             <br>
         </c:forEach>
