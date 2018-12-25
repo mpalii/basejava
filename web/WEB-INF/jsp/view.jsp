@@ -39,19 +39,19 @@
                 </c:when>
 
 
-                <%--<c:when test="${sectionName=='ACHIEVEMENT' || sectionName='QUALIFICATIONS'}">--%>
-                    <%--<dt><h4>${SectionType.valueOf(sectionName).getTitle()}</h4></dt>--%>
-                    <%--<c:set var="listTextSection" value="${sectionEntry.value}"/>--%>
-                    <%--<jsp:useBean id="listTextSection"--%>
-                                 <%--type="ru.javaops.webapp.model.ListTextSection"/>--%>
-                    <%--<dd>--%>
-                        <%--<ul>--%>
-                            <%--<c:forEach var="textElement" items="${listTextSection.listContent}">--%>
-                                <%--<li>${textElement}</li>--%>
-                            <%--</c:forEach>--%>
-                        <%--</ul>--%>
-                    <%--</dd>--%>
-                <%--</c:when>--%>
+                <c:when test="${sectionName=='ACHIEVEMENT' || sectionName=='QUALIFICATIONS'}">
+                    <dt><h4>${SectionType.valueOf(sectionName).getTitle()}</h4></dt>
+                    <c:set var="listTextSection" value="${sectionEntry.value}"/>
+                    <jsp:useBean id="listTextSection"
+                                 type="ru.javaops.webapp.model.ListTextSection"/>
+                    <dd>
+                        <ul>
+                            <c:forEach var="textElement" items="${listTextSection.listContent}">
+                                <li>${textElement}</li>
+                            </c:forEach>
+                        </ul>
+                    </dd>
+                </c:when>
 
 
             </c:choose>
