@@ -1,31 +1,192 @@
-header {
-    background: none repeat scroll 0 0 #A6C9E2;
-    color: #2E6E9E;
-    font-size: 20px;
-    padding: 5px 20px;
+body {
+    background-color: #eeeeee;
+    color: black;
+    margin: 0;
+}
+
+header, footer {
+    background-color: #222831;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: white;
+    text-align: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    font-weight: bold;
 }
 
 footer {
-    background: none repeat scroll 0 0 #A6C9E2;
-    color: #2E6E9E;
-    font-size: 20px;
-    padding: 5px 20px;
-    margin: 20px 0;
+    font-size: 12px;
+    position: fixed; /* Фиксированное положение */
+    left: 0; bottom: 0; /* Левый нижний угол */
+    padding: 10px; /* Поля вокруг текста */
+    width: 100%; /* Ширина слоя */
 }
 
-dl {
-    background: none repeat scroll 0 0 #FAFAFA;
-    margin: 8px 0;
+/**/
+
+h2, h3, h4, h5 {
+    color: black;
+    margin-left: 40px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+h4, h5, td {
+    margin: 0px 5px 10px 5px;
+}
+
+p, li, td {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+div {
+    margin-left: 12px;
+}
+
+input, textarea {
+    font-family: "Times New Roman", Times, sans-serif;
+    font-size: 14px;
+    margin: 0;
     padding: 0;
+    width: 100%;
 }
 
-dt {
-    display: inline-block;
-    width: 170px;
+/**/
+
+/*.button:link, .button:visited {*/
+    /*background-color: #393e46;*/
+    /*color: white;*/
+    /*padding: 5px 10px;*/
+    /*text-align: center;*/
+    /*text-decoration: none;*/
+    /*display: inline-block;*/
+    /*box-shadow: 0 0 2px 2px #393e46;*/
+    /*border-radius: 16px;*/
+/*}*/
+
+/*.button:hover, .button:active {*/
+    /*background-color: #00adb5;*/
+    /*box-shadow: 0 0 4px 4px #00adb5;*/
+/*}*/
+
+/**/
+
+#resumes {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 95%;
+    margin: auto;
 }
 
-dd {
-    display: inline-block;
-    margin-left: 8px;
+#resumes td, #resumes th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#resumes tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+#resumes tr:hover {
+    background-color: #ddd;
+}
+
+#resumes th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #00adb5;
+    color: white;
+}
+
+section {
+    margin: 15px 30px 15px;
+}
+
+.button {
+    border-top: 1px solid #96d1f8;
+    background: #65a9d7;
+    background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+    background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+    background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+    background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+    background: -o-linear-gradient(top, #3e779d, #65a9d7);
+    padding: 5px 10px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+    -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+    box-shadow: rgba(0,0,0,1) 0 1px 0;
+    text-shadow: rgba(0,0,0,.4) 0 1px 0;
+    color: white;
+    font-size: 14px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    vertical-align: middle;
+}
+.button:hover {
+    border-top-color: #28597a;
+    background: #28597a;
+    color: #ccc;
+}
+.button:active {
+    border-top-color: #1b435e;
+    background: #1b435e;
+}
+
+.sectionName h4 {
     vertical-align: top;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*header {*/
+    /*background: none repeat scroll 0 0 #A6C9E2;*/
+    /*color: #2E6E9E;*/
+    /*font-size: 20px;*/
+    /*padding: 5px 20px;*/
+/*}*/
+
+/*footer {*/
+    /*background: none repeat scroll 0 0 #A6C9E2;*/
+    /*color: #2E6E9E;*/
+    /*font-size: 20px;*/
+    /*padding: 5px 20px;*/
+    /*margin: 20px 0;*/
+/*}*/
+
+/*dl {*/
+    /*background: none repeat scroll 0 0 #FAFAFA;*/
+    /*margin: 8px 0;*/
+    /*padding: 0;*/
+/*}*/
+
+/*dt {*/
+    /*display: inline-block;*/
+    /*width: 170px;*/
+/*}*/
+
+/*dd {*/
+    /*display: inline-block;*/
+    /*margin-left: 8px;*/
+    /*vertical-align: top;*/
+/*}*/
