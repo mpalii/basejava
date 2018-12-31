@@ -53,7 +53,7 @@ public class ResumeObserverServlet extends HttpServlet {
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
                         resume.addSection(sectionType,
-                                new ListTextSection(Arrays.stream(value.split(",")).map(String::trim).collect(Collectors.toList())));
+                                new ListTextSection(Arrays.stream(value.split("\n")).map(String::trim).collect(Collectors.toList())));
                         break;
                 }
             }

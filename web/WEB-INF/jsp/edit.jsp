@@ -56,7 +56,7 @@
                         <c:set var="listTextSection" value="${resume.getSection(SectionType.valueOf(sectionName))}"/>
                         <jsp:useBean id="listTextSection"
                                      type="ru.javaops.webapp.model.ListTextSection"/>
-                        <c:set var="content" value="${String.join(', ', listTextSection.listContent)}"/>
+                        <c:set var="content" value="${String.join('', listTextSection.listContent)}"/>
                         <tr>
                             <td>${SectionType.valueOf(sectionName).getTitle()}</td>
                             <td><textarea name="${sectionName}" cols="80" rows="10">${content}</textarea></td>
