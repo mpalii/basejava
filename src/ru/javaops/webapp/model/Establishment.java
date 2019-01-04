@@ -10,23 +10,36 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Establishment implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String uuid;
     private Link establishment;
     private List<Position> positions;
 
     public Establishment() {
+        uuid = UUID.randomUUID().toString();
     }
 
     public Establishment(String name, String url, List<Position> list) {
         Objects.requireNonNull(name, "parameter name must be not null");
         Objects.requireNonNull(list, "list must be initialized");
+        uuid = UUID.randomUUID().toString();
         establishment = new Link(name, url);
         positions = list;
     }
+
+    public Establishment(String uuid, String name, String url, List<Position> list) {
+        Objects.requireNonNull(name, "parameter name must be not null");
+        Objects.requireNonNull(list, "list must be initialized");
+        this.uuid = uuid;
+        establishment = new Link(name, url);
+        positions = list;
+    }
+
 
     public Establishment(String name, String url, Position... positions) {
         this(name, url, Arrays.asList(positions));
@@ -38,6 +51,10 @@ public class Establishment implements Serializable {
 
     public List<Position> getPositions() {
         return positions;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 
     @Override

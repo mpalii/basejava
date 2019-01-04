@@ -14,12 +14,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>resumeServlet</servlet-name>
-        <servlet-class>ru.javaops.webapp.web.ResumeServlet</servlet-class>
+        <servlet-name>establishmentObserverServlet</servlet-name>
+        <servlet-class>ru.javaops.webapp.web.EstablishmentObserverServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>resumeServlet</servlet-name>
-        <url-pattern>/resume</url-pattern>
+        <servlet-name>establishmentObserverServlet</servlet-name>
+        <url-pattern>/getEstablishment</url-pattern>
     </servlet-mapping>
 
 </web-app>

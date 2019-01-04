@@ -52,26 +52,6 @@ input, textarea {
     width: 100%;
 }
 
-/**/
-
-/*.button:link, .button:visited {*/
-    /*background-color: #393e46;*/
-    /*color: white;*/
-    /*padding: 5px 10px;*/
-    /*text-align: center;*/
-    /*text-decoration: none;*/
-    /*display: inline-block;*/
-    /*box-shadow: 0 0 2px 2px #393e46;*/
-    /*border-radius: 16px;*/
-/*}*/
-
-/*.button:hover, .button:active {*/
-    /*background-color: #00adb5;*/
-    /*box-shadow: 0 0 4px 4px #00adb5;*/
-/*}*/
-
-/**/
-
 #resumes {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -139,54 +119,3 @@ section {
 .sectionName h4 {
     vertical-align: top;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*header {*/
-    /*background: none repeat scroll 0 0 #A6C9E2;*/
-    /*color: #2E6E9E;*/
-    /*font-size: 20px;*/
-    /*padding: 5px 20px;*/
-/*}*/
-
-/*footer {*/
-    /*background: none repeat scroll 0 0 #A6C9E2;*/
-    /*color: #2E6E9E;*/
-    /*font-size: 20px;*/
-    /*padding: 5px 20px;*/
-    /*margin: 20px 0;*/
-/*}*/
-
-/*dl {*/
-    /*background: none repeat scroll 0 0 #FAFAFA;*/
-    /*margin: 8px 0;*/
-    /*padding: 0;*/
-/*}*/
-
-/*dt {*/
-    /*display: inline-block;*/
-    /*width: 170px;*/
-/*}*/
-
-/*dd {*/
-    /*display: inline-block;*/
-    /*margin-left: 8px;*/
-    /*vertical-align: top;*/
-/*}*/

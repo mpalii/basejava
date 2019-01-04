@@ -49,6 +49,7 @@ final class ResumeDataTest {
                         )
                 )
         );
+        RESUME_1.addSection(SectionType.EDUCATION, new ListEstablishmentSection());
 
         // RESUME_2 initialization
         RESUME_2 = new Resume("UUID_2", "Serhii Nesterov");
@@ -81,6 +82,7 @@ final class ResumeDataTest {
                         )
                 )
         );
+        RESUME_2.addSection(SectionType.EDUCATION, new ListEstablishmentSection());
 
         // RESUME_3 initialization
         RESUME_3 = new Resume("UUID_3", "Maksym Palii");
@@ -110,6 +112,7 @@ final class ResumeDataTest {
                         )
                 )
         );
+        RESUME_3.addSection(SectionType.EDUCATION, new ListEstablishmentSection());
 
         // RESUME_4 initialization
         RESUME_4 = new Resume("UUID_4", "Pryntseva Olha");
@@ -137,6 +140,7 @@ final class ResumeDataTest {
                         )
                 )
         );
+        RESUME_4.addSection(SectionType.EDUCATION, new ListEstablishmentSection());
     }
 
     static Resume getResume1() {
